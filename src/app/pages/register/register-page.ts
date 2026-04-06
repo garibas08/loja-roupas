@@ -15,6 +15,7 @@ export class RegisterPageComponent {
   private readonly store = inject(StoreService);
   private readonly router = inject(Router);
 
+  readonly user = this.store.loggedUser;
   message = '';
 
   readonly form = this.fb.group({
@@ -38,7 +39,7 @@ export class RegisterPageComponent {
     this.message = result.message;
 
     if (result.success) {
-      this.router.navigateByUrl('/');
+      this.router.navigateByUrl('/minha-conta');
     }
   }
 }

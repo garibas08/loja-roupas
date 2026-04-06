@@ -13,7 +13,7 @@ export class StoreService {
   readonly searchTerm = signal('');
   readonly cart = signal<CartItem[]>(this.readCartStorage());
   readonly users = signal<RegisteredUser[]>(this.readStorage<RegisteredUser[]>(USERS_KEY, []));
-  readonly loggedUser = signal<LoggedUser | null>(this.readStorage<LoggedUser | null>(LOGGED_USER_KEY, null));
+  readonly loggedUser = signal<LoggedUser | null>(this.readLoggedUserStorage());
   readonly lastOrder = signal<OrderSummary | null>(this.readStorage<OrderSummary | null>(LAST_ORDER_KEY, null));
   readonly cartPopupVisible = signal(false);
   readonly lastAddedItem = signal<CartItem | null>(null);
@@ -108,7 +108,7 @@ export class StoreService {
     const updatedUsers = [...this.users(), user];
     this.users.set(updatedUsers);
     localStorage.setItem(USERS_KEY, JSON.stringify(updatedUsers));
-    this.setLoggedUser({ name: user.name, email: user.email });
+    this.setLoggedUser(user);
     return { success: true, message: 'Cadastro realizado com sucesso.' };
   }
 
@@ -121,11 +121,14 @@ export class StoreService {
       return { success: false, message: 'Email ou senha invalidos.' };
     }
 
-    this.setLoggedUser({ name: user.name, email: user.email });
+    this.setLoggedUser(user);
     return { success: true, message: 'Login realizado com sucesso.' };
   }
 
   logout(): void {
+    this.clearCart();
+    this.lastAddedItem.set(null);
+    this.cartPopupVisible.set(false);
     this.loggedUser.set(null);
     localStorage.removeItem(LOGGED_USER_KEY);
   }
@@ -148,6 +151,31 @@ export class StoreService {
   private setLoggedUser(user: LoggedUser): void {
     this.loggedUser.set(user);
     localStorage.setItem(LOGGED_USER_KEY, JSON.stringify(user));
+  }
+
+  private readLoggedUserStorage(): LoggedUser | null {
+    const stored = this.readStorage<Partial<LoggedUser> | null>(LOGGED_USER_KEY, null);
+
+    if (!stored?.email) {
+      return null;
+    }
+
+    if (stored.name && stored.password) {
+      return {
+        name: stored.name,
+        email: stored.email,
+        password: stored.password
+      } satisfies LoggedUser;
+    }
+
+    const registeredUser = this.users().find((entry) => entry.email.toLowerCase() === stored.email?.toLowerCase());
+
+    if (!registeredUser) {
+      return null;
+    }
+
+    localStorage.setItem(LOGGED_USER_KEY, JSON.stringify(registeredUser));
+    return registeredUser;
   }
 
   private updateCart(cart: CartItem[]): void {

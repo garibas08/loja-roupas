@@ -1,0 +1,61 @@
+<section class="account-page" *ngIf="user() as currentUser; else guestState">
+  <div class="account-page__intro">
+    <span class="eyebrow">Minha conta</span>
+    <h1>{{ currentUser.name }}</h1>
+    <p>Seus dados de acesso ficam salvos apenas neste navegador para simular a experiencia completa do frontend.</p>
+  </div>
+
+  <div class="account-grid">
+    <article class="account-card account-card--highlight">
+      <span class="eyebrow">Sessao ativa</span>
+      <h2>Conta pronta para comprar</h2>
+      <p>Voce pode seguir para o carrinho, continuar navegando pela vitrine ou sair quando quiser.</p>
+
+      <div class="account-actions">
+        <a routerLink="/">Continuar comprando</a>
+        <a routerLink="/carrinho" class="account-actions__secondary">Ver carrinho</a>
+      </div>
+    </article>
+
+    <article class="account-card">
+      <span class="eyebrow">Dados cadastrados</span>
+      <h2>Informacoes salvas no front</h2>
+
+      <dl class="account-details">
+        <div>
+          <dt>Nome</dt>
+          <dd>{{ currentUser.name }}</dd>
+        </div>
+        <div>
+          <dt>Email</dt>
+          <dd>{{ currentUser.email }}</dd>
+        </div>
+        <div>
+          <dt>Senha</dt>
+          <dd>{{ currentUser.password }}</dd>
+        </div>
+      </dl>
+    </article>
+
+    <article class="account-card">
+      <span class="eyebrow">Conta local</span>
+      <h2>Sem backend</h2>
+      <p>Todos os dados exibidos aqui ficam em armazenamento local para respeitar o fluxo 100% frontend que voce pediu.</p>
+
+      <button type="button" class="account-logout" (click)="logout()">Sair da conta</button>
+    </article>
+  </div>
+</section>
+
+<ng-template #guestState>
+  <section class="account-page account-page--guest">
+    <span class="eyebrow">Minha conta</span>
+    <h1>Voce ainda nao esta logado</h1>
+    <p>Entre com sua conta para ver nome, email e senha salvos localmente no navegador.</p>
+
+    <div class="account-actions">
+      <a routerLink="/login">Fazer login</a>
+      <a routerLink="/cadastro" class="account-actions__secondary">Criar conta</a>
+    </div>
+  </section>
+</ng-template>

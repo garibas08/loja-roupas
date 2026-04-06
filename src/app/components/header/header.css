@@ -3,7 +3,7 @@
   top: 0;
   z-index: 10;
   backdrop-filter: blur(18px);
-  background: color-mix(in srgb, var(--rt-surface-strong) 88%, transparent);
+  background: color-mix(in srgb, var(--rt-surface-strong) 90%, transparent);
   border-bottom: 1px solid var(--rt-border);
   transition: background 0.5s ease, color 0.5s ease, border-color 0.5s ease;
 }
@@ -36,7 +36,12 @@
   height: 56px;
   border-radius: 18px;
   object-fit: cover;
-  box-shadow: 0 12px 24px rgba(58, 33, 24, 0.18);
+  box-shadow: var(--rt-shadow-soft);
+}
+
+.brand strong {
+  display: block;
+  font-size: 1.18rem;
 }
 
 .search {
@@ -51,7 +56,7 @@
   border: 1px solid var(--rt-border);
   border-radius: 999px;
   padding: 0.9rem 1rem;
-  background: var(--rt-surface);
+  background: color-mix(in srgb, var(--rt-surface) 88%, white 12%);
   color: var(--rt-text);
 }
 
@@ -84,7 +89,7 @@
 .nav__action:hover,
 .theme-button:hover,
 .theme-menu button:hover {
-  background: rgba(124, 79, 53, 0.08);
+  background: color-mix(in srgb, var(--rt-primary) 10%, transparent);
 }
 
 .theme-button {
@@ -111,8 +116,13 @@
 }
 
 .theme-menu button.active {
-  background: rgba(124, 79, 53, 0.12);
+  background: color-mix(in srgb, var(--rt-primary) 14%, transparent);
   color: var(--rt-primary);
+}
+
+.nav__pill {
+  background: color-mix(in srgb, var(--rt-primary) 10%, transparent) !important;
+  color: var(--rt-primary) !important;
 }
 
 .cart-link {
@@ -137,11 +147,12 @@
 .menu-toggle {
   display: none;
   border: 0;
-  background: rgba(255, 255, 255, 0.85);
+  background: color-mix(in srgb, var(--rt-surface) 84%, white 16%);
   width: 48px;
   height: 48px;
   border-radius: 14px;
   padding: 0.85rem;
+  border: 1px solid var(--rt-border);
 }
 
 .menu-toggle span {
@@ -155,8 +166,15 @@
   width: min(1180px, calc(100% - 2rem));
   margin: 0 auto;
   padding-bottom: 1rem;
+  display: flex;
+  gap: 0.85rem;
+  align-items: center;
   color: var(--rt-muted);
   font-size: 0.92rem;
+}
+
+.header__status strong {
+  color: var(--rt-text);
 }
 
 @media (max-width: 960px) {
@@ -193,6 +211,11 @@
   .nav__action {
     text-align: center;
     background: var(--rt-surface);
+  }
+
+  .header__status {
+    flex-direction: column;
+    align-items: start;
   }
 }
 

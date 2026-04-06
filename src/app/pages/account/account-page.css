@@ -1,0 +1,134 @@
+.account-page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.account-page__intro,
+.account-card,
+.account-page--guest {
+  padding: 2rem;
+  border-radius: 32px;
+  border: 1px solid var(--rt-border);
+  background: var(--rt-surface);
+  box-shadow: var(--rt-shadow-soft);
+}
+
+.account-page__intro {
+  background:
+    radial-gradient(circle at top right, rgba(210, 148, 92, 0.18), transparent 34%),
+    linear-gradient(135deg, color-mix(in srgb, var(--rt-primary) 12%, var(--rt-surface)) 0%, var(--rt-surface) 100%);
+}
+
+.account-page__intro h1,
+.account-page__intro p,
+.account-card h2,
+.account-card p,
+.account-page--guest h1,
+.account-page--guest p {
+  margin: 0.4rem 0 0;
+}
+
+.account-page__intro p,
+.account-card p,
+.account-page--guest p,
+.account-details dt {
+  color: var(--rt-muted);
+}
+
+.account-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 0.9fr;
+  gap: 1.5rem;
+}
+
+.account-card {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.account-card--highlight {
+  background:
+    linear-gradient(145deg, rgba(13, 32, 34, 0.94), rgba(27, 80, 74, 0.9)),
+    var(--rt-surface);
+  color: #f8faf8;
+}
+
+.account-card--highlight p {
+  color: rgba(248, 250, 248, 0.74);
+}
+
+.account-details {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+}
+
+.account-details div {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem 1.1rem;
+  border-radius: 22px;
+  background: var(--rt-surface-strong);
+  border: 1px solid color-mix(in srgb, var(--rt-border) 92%, white 8%);
+}
+
+.account-details dt,
+.account-details dd {
+  margin: 0;
+}
+
+.account-details dd {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--rt-text);
+  word-break: break-word;
+}
+
+.account-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.account-actions a,
+.account-logout {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.95rem 1.15rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+.account-actions a,
+.account-logout {
+  background: var(--rt-primary);
+  color: white;
+}
+
+.account-actions__secondary {
+  background: color-mix(in srgb, var(--rt-primary) 12%, transparent) !important;
+  color: var(--rt-primary) !important;
+}
+
+.account-page--guest {
+  justify-items: start;
+}
+
+@media (max-width: 980px) {
+  .account-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .account-page__intro,
+  .account-card,
+  .account-page--guest {
+    padding: 1.4rem;
+    border-radius: 28px;
+  }
+}

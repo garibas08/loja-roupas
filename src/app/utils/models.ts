@@ -32,10 +32,7 @@ export interface RegisteredUser {
   password: string;
 }
 
-export interface LoggedUser {
-  name: string;
-  email: string;
-}
+export interface LoggedUser extends RegisteredUser {}
 
 export type PaymentMethod = 'Cartao' | 'Pix' | 'Boleto';
 

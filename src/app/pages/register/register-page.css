@@ -6,6 +6,8 @@
   padding: 2rem;
   border-radius: 32px;
   background: var(--rt-surface);
+  border: 1px solid var(--rt-border);
+  box-shadow: var(--rt-shadow-soft);
 }
 
 .auth-card h1,
@@ -45,6 +47,27 @@
   background: var(--rt-primary);
   color: white;
   cursor: pointer;
+}
+
+.auth-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.auth-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.95rem 1rem;
+  background: var(--rt-primary);
+  color: white;
+}
+
+.auth-actions__secondary {
+  background: color-mix(in srgb, var(--rt-primary) 12%, transparent) !important;
+  color: var(--rt-primary) !important;
 }
 
 .helper a {

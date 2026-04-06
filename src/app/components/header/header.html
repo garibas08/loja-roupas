@@ -1,10 +1,10 @@
 <header class="header">
   <div class="header__inner">
     <a routerLink="/" class="brand">
-      <img src="/assets/produtos/logo.jpg" alt="Fatec Store" class="brand__logo">
+      <img src="/assets/produtos/logo.jpg" alt="Garibas Store" class="brand__logo">
       <div>
-        <span class="eyebrow">Moda urbana</span>
-        <strong>Fatec Store</strong>
+        <span class="eyebrow">Fashion studio</span>
+        <strong>Garibas Store</strong>
       </div>
     </a>
 
@@ -42,8 +42,9 @@
 
       <nav class="nav" [class.nav--open]="menuOpen()">
         <a routerLink="/">Home</a>
-        <a routerLink="/cadastro">Cadastro</a>
-        <a routerLink="/login">{{ user() ? 'Minha conta' : 'Login' }}</a>
+        <a *ngIf="!user()" routerLink="/cadastro">Cadastro</a>
+        <a *ngIf="!user()" routerLink="/login" class="nav__pill">Login</a>
+        <a *ngIf="user()" routerLink="/minha-conta" class="nav__pill">Minha conta</a>
         <a routerLink="/carrinho" class="cart-link">
           Carrinho
           <span>{{ cartCount() }}</span>
@@ -55,5 +56,6 @@
 
   <div class="header__status" *ngIf="user() as currentUser">
     <span>Logado como {{ currentUser.name }}</span>
+    <strong>{{ currentUser.email }}</strong>
   </div>
 </header>

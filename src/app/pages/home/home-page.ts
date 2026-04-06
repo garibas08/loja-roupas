@@ -1,95 +1,104 @@
-import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ViewEncapsulation, effect, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { CommonModule, CurrencyPipe } from '@angular/common';
+import { Component, OnDestroy, OnInit, computed, effect, inject, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { Product } from '../../utils/models';
 import { StoreService } from '../../utils/store.service';
 
 @Component({
   selector: 'app-home-page',
-  imports: [CommonModule],
+  imports: [CommonModule, CurrencyPipe, RouterLink],
   templateUrl: './home-page.html',
-  styleUrl: './home-page.css',
-  encapsulation: ViewEncapsulation.None
+  styleUrl: './home-page.css'
 })
-export class HomePageComponent implements AfterViewInit {
+export class HomePageComponent implements OnInit, OnDestroy {
   private readonly store = inject(StoreService);
   private readonly router = inject(Router);
-  private readonly currency = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
+  private carouselTimer: number | null = null;
+
+  readonly products = this.store.filteredProducts;
+  readonly cartCount = this.store.cartCount;
+  readonly featuredProducts = computed(() => this.store.products().slice(0, 4));
+  readonly activeSlideIndex = signal(0);
+  readonly activeProduct = computed(() => {
+    const featured = this.featuredProducts();
+    return featured.length ? featured[this.activeSlideIndex() % featured.length] : null;
   });
+  readonly productCountLabel = computed(
+    () => `${this.products().length} produto(s) encontrado(s) | ${this.cartCount()} no carrinho`
+  );
+  readonly highlightCategories = computed(() => [...new Set(this.store.products().map((product) => product.category))]);
 
   constructor() {
     effect(() => {
-      this.store.searchTerm();
-      queueMicrotask(() => this.renderizarProdutos());
+      const featured = this.featuredProducts();
+      const index = this.activeSlideIndex();
+
+      if (!featured.length) {
+        if (index !== 0) {
+          this.activeSlideIndex.set(0);
+        }
+        return;
+      }
+
+      if (index >= featured.length) {
+        this.activeSlideIndex.set(0);
+      }
     });
   }
 
-  ngAfterViewInit(): void {
-    this.renderizarProdutos();
-    setTimeout(() => this.renderizarProdutos(), 0);
+  ngOnInit(): void {
+    this.startCarousel();
   }
 
-  private renderizarProdutos(): void {
-    const container = document.getElementById('lista-produtos');
-    const emptyState = document.getElementById('produtos-vazio');
-    const count = document.getElementById('produtos-contagem');
+  ngOnDestroy(): void {
+    this.stopCarousel();
+  }
 
-    if (!container || !emptyState || !count) {
+  nextSlide(): void {
+    const featured = this.featuredProducts();
+
+    if (!featured.length) {
       return;
     }
 
-    const term = this.store.searchTerm().trim().toLowerCase();
-    const produtos = this.store
-      .getAllProducts()
-      .filter((produto) => !term || produto.name.toLowerCase().includes(term));
+    this.activeSlideIndex.update((index) => (index + 1) % featured.length);
+  }
 
-    container.innerHTML = '';
-    count.textContent = `${produtos.length} produto(s) encontrado(s) | ${this.store.cartCount()} no carrinho`;
+  prevSlide(): void {
+    const featured = this.featuredProducts();
 
-    if (!produtos.length) {
-      emptyState.hidden = false;
+    if (!featured.length) {
       return;
     }
 
-    emptyState.hidden = true;
-
-    produtos.forEach((produto) => {
-      container.appendChild(this.criarCard(produto));
-    });
+    this.activeSlideIndex.update((index) => (index - 1 + featured.length) % featured.length);
   }
 
-  private criarCard(produto: Product): HTMLElement {
-    const card = document.createElement('article');
-    card.className = 'catalog-card';
+  selectSlide(index: number): void {
+    this.activeSlideIndex.set(index);
+  }
 
-    card.innerHTML = `
-      <button class="catalog-card__image-button" type="button">
-        <img src="${produto.image}" alt="${produto.name}" class="catalog-card__image">
-      </button>
-      <div class="catalog-card__content">
-        <span class="catalog-card__category">${produto.category}</span>
-        <button class="catalog-card__title" type="button">${produto.name}</button>
-        <p class="catalog-card__description">${produto.description}</p>
-        <strong class="catalog-card__price">${this.currency.format(produto.price)}</strong>
-        <div class="catalog-card__actions">
-          <button class="catalog-card__details" type="button">Ver detalhes</button>
-          <button class="catalog-card__add" type="button">Adicionar ao carrinho</button>
-        </div>
-      </div>
-    `;
+  addToCart(productId: number): void {
+    this.store.addToCart(productId);
+  }
 
-    const goToProduct = () => this.router.navigateByUrl(`/produto/${produto.id}`);
+  goToProduct(productId: number): void {
+    this.router.navigateByUrl(`/produto/${productId}`);
+  }
 
-    card.querySelector('.catalog-card__image-button')?.addEventListener('click', goToProduct);
-    card.querySelector('.catalog-card__title')?.addEventListener('click', goToProduct);
-    card.querySelector('.catalog-card__details')?.addEventListener('click', goToProduct);
-    card.querySelector('.catalog-card__add')?.addEventListener('click', () => {
-      this.store.addToCart(produto.id);
-      this.renderizarProdutos();
-    });
+  trackById(_: number, product: Product): number {
+    return product.id;
+  }
 
-    return card;
+  private startCarousel(): void {
+    this.stopCarousel();
+    this.carouselTimer = window.setInterval(() => this.nextSlide(), 4200);
+  }
+
+  private stopCarousel(): void {
+    if (this.carouselTimer !== null) {
+      window.clearInterval(this.carouselTimer);
+      this.carouselTimer = null;
+    }
   }
 }

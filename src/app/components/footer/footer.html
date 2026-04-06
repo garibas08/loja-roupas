@@ -2,18 +2,18 @@
   <div class="footer__inner">
     <div>
       <span class="eyebrow">Frontend completo</span>
-      <h2>Loja de roupas pronta para crescer</h2>
+      <h2>Uma loja de moda pronta para evoluir</h2>
       <p>
-        Projeto responsivo com fluxo completo de compra no frontend, usando Angular, HTML, CSS, TypeScript e
-        armazenamento local.
+        Projeto responsivo com vitrine em carrossel, area de conta local e fluxo completo de compra apenas no
+        frontend com Angular, HTML, CSS, TypeScript e armazenamento local.
       </p>
     </div>
 
     <div class="footer__links">
-      <a routerLink="/">Produtos</a>
+      <a routerLink="/">Vitrine</a>
       <a routerLink="/carrinho">Carrinho</a>
       <a routerLink="/checkout">Checkout</a>
-      <a routerLink="/login">Login</a>
+      <a [routerLink]="user() ? '/minha-conta' : '/login'">{{ user() ? 'Minha conta' : 'Login' }}</a>
     </div>
   </div>
 </footer>

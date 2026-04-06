@@ -1,17 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
-import { Cesta } from './cesta';
+import { CestaComponent } from './cesta';
 
 describe('Cesta', () => {
-  let component: Cesta;
-  let fixture: ComponentFixture<Cesta>;
+  let component: CestaComponent;
+  let fixture: ComponentFixture<CestaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Cesta],
+      imports: [CestaComponent],
+      providers: [provideRouter([])]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Cesta);
+    fixture = TestBed.createComponent(CestaComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
