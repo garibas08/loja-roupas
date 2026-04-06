@@ -1,0 +1,21 @@
+<div class="app-shell">
+  <app-header></app-header>
+  <main class="page-shell">
+    <router-outlet></router-outlet>
+  </main>
+  <app-footer></app-footer>
+
+  <div class="popup-overlay" *ngIf="store.cartPopupVisible()" (click)="closePopup()">
+    <div class="popup-card" (click)="$event.stopPropagation()">
+      <span class="eyebrow">Carrinho</span>
+      <h2>Produto adicionado ao carrinho!</h2>
+      <p *ngIf="store.lastAddedItem() as item">
+        {{ item.name }} foi salvo com imagem, descricao e quantidade atualizada.
+      </p>
+      <div class="popup-actions">
+        <button type="button" class="popup-secondary" (click)="closePopup()">Continuar comprando</button>
+        <button type="button" class="popup-primary" (click)="goToCart()">Ver carrinho</button>
+      </div>
+    </div>
+  </div>
+</div>

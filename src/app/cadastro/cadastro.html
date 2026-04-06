@@ -1,0 +1,65 @@
+<div class="auth-shell">
+  <div class="row g-4 align-items-center">
+    <div class="col-12">
+      <div class="brand-pill mb-3">Novo cadastro</div>
+      <h2 class="h3 fw-bold mb-2">Crie sua conta na RoupasTec</h2>
+      <p class="muted-copy mb-0">
+        O cadastro ficou com cara mais profissional, usando Bootstrap para melhorar espaco, hierarquia e leitura.
+      </p>
+    </div>
+
+    <div class="col-12">
+      <div class="cadastro-box rounded-5 p-4 p-lg-5">
+        <form class="row g-3">
+          <div class="col-12">
+            <label for="nome" class="form-label fw-semibold">Nome</label>
+            <input id="nome" type="text" name="nome" [(ngModel)]="nome" class="form-control" placeholder="Seu nome completo">
+          </div>
+
+          <div class="col-12">
+            <label for="cadastroEmail" class="form-label fw-semibold">Email</label>
+            <input
+              id="cadastroEmail"
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              class="form-control"
+              placeholder="voce@exemplo.com"
+            >
+          </div>
+
+          <div class="col-md-6">
+            <label for="cadastroSenha" class="form-label fw-semibold">Senha</label>
+            <input
+              id="cadastroSenha"
+              type="password"
+              name="senha"
+              [(ngModel)]="senha"
+              class="form-control"
+              placeholder="Crie uma senha"
+            >
+          </div>
+
+          <div class="col-md-6">
+            <label for="confirmarSenha" class="form-label fw-semibold">Confirmar senha</label>
+            <input
+              id="confirmarSenha"
+              type="password"
+              name="confirmarSenha"
+              [(ngModel)]="confirmarSenha"
+              class="form-control"
+              placeholder="Repita a senha"
+            >
+          </div>
+
+          <div class="col-12 d-flex flex-column flex-sm-row gap-3 pt-2">
+            <button type="button" class="btn rt-btn-primary btn-lg rounded-pill px-4" (click)="cadastrar()">
+              Cadastrar
+            </button>
+            <a routerLink="/login" class="btn rt-btn-outline btn-lg rounded-pill px-4">Ja tenho conta</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

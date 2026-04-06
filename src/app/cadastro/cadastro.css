@@ -1,0 +1,5 @@
+.cadastro-box {
+  background: linear-gradient(180deg, rgba(255, 250, 244, 0.98), rgba(248, 238, 227, 0.94));
+  border: 1px solid rgba(124, 79, 53, 0.14);
+  box-shadow: 0 20px 45px rgba(79, 53, 43, 0.12);
+}

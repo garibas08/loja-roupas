@@ -1,0 +1,18 @@
+<article class="product-card">
+  <a [routerLink]="['/produto', product.id]" class="product-card__image-link">
+    <img [src]="product.image" [alt]="product.name" class="product-card__image">
+  </a>
+
+  <div class="product-card__content">
+    <span class="product-card__category">{{ product.category }}</span>
+    <a [routerLink]="['/produto', product.id]" class="product-card__title">{{ product.name }}</a>
+    <p class="product-card__description">{{ product.description }}</p>
+    <div class="product-card__footer">
+      <strong>{{ product.price | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+      <div class="product-card__actions">
+        <a [routerLink]="['/produto', product.id]">Ver detalhes</a>
+        <button type="button" (click)="add.emit(product.id)">Adicionar ao carrinho</button>
+      </div>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,102 @@
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-shell {
+  flex: 1;
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 3rem;
+}
+
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(6, 0, 15, 0.58);
+  animation: fade-in 180ms ease;
+}
+
+.popup-card {
+  width: min(100%, 420px);
+  display: grid;
+  gap: 1rem;
+  padding: 1.75rem;
+  border-radius: 28px;
+  background: var(--rt-surface);
+  color: var(--rt-text);
+  box-shadow: 0 24px 60px rgba(6, 0, 15, 0.24);
+  animation: popup-up 220ms ease;
+  transition: background 0.5s ease, color 0.5s ease;
+}
+
+.popup-card h2,
+.popup-card p {
+  margin: 0;
+}
+
+.popup-card p {
+  color: var(--rt-muted);
+  line-height: 1.6;
+}
+
+.popup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.popup-actions button {
+  flex: 1;
+  min-width: 150px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.95rem 1.15rem;
+  cursor: pointer;
+  transition: background 0.5s ease, color 0.5s ease;
+}
+
+.popup-primary {
+  background: var(--rt-primary);
+  color: white;
+}
+
+.popup-secondary {
+  background: color-mix(in srgb, var(--rt-primary) 14%, transparent);
+  color: var(--rt-primary);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popup-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 720px) {
+  .page-shell {
+    width: min(100% - 1rem, 1180px);
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+}

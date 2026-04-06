@@ -1,0 +1,30 @@
+<section class="detail" *ngIf="product as item; else notFound">
+  <img [src]="item.image" [alt]="item.name" class="detail__image">
+
+  <div class="detail__content">
+    <span class="eyebrow">{{ item.category }}</span>
+    <h1>{{ item.name }}</h1>
+    <strong>{{ item.price | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+    <p>{{ item.description }}</p>
+
+    <div class="detail__sizes">
+      <span>Tamanhos disponiveis</span>
+      <div>
+        <span *ngFor="let size of item.sizes">{{ size }}</span>
+      </div>
+    </div>
+
+    <div class="detail__actions">
+      <button type="button" (click)="addToCart()">Adicionar ao carrinho</button>
+      <a routerLink="/">Voltar</a>
+      <a routerLink="/carrinho">Ir para o carrinho</a>
+    </div>
+  </div>
+</section>
+
+<ng-template #notFound>
+  <section class="not-found">
+    <h2>Produto nao encontrado</h2>
+    <a routerLink="/">Voltar para a home</a>
+  </section>
+</ng-template>

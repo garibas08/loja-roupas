@@ -1,0 +1,68 @@
+<section class="checkout-page" *ngIf="items().length">
+  <form class="checkout-form" [formGroup]="form" (ngSubmit)="submit()">
+    <div>
+      <span class="eyebrow">Checkout</span>
+      <h1>Finalize sua compra</h1>
+    </div>
+
+    <label>
+      <span>Nome</span>
+      <input type="text" formControlName="name">
+    </label>
+
+    <label>
+      <span>Endereco</span>
+      <input type="text" formControlName="address">
+    </label>
+
+    <div class="checkout-form__row">
+      <label>
+        <span>Numero</span>
+        <input type="text" formControlName="number">
+      </label>
+
+      <label>
+        <span>Cidade</span>
+        <input type="text" formControlName="city">
+      </label>
+    </div>
+
+    <label>
+      <span>CEP</span>
+      <input type="text" formControlName="cep" (input)="onCepInput($event)" placeholder="00000-000">
+    </label>
+
+    <label>
+      <span>Forma de pagamento</span>
+      <select formControlName="paymentMethod">
+        <option value="Cartao">Cartao</option>
+        <option value="Pix">Pix</option>
+        <option value="Boleto">Boleto</option>
+      </select>
+    </label>
+
+    <label *ngIf="form.controls.paymentMethod.value === 'Cartao'">
+      <span>Numero do cartao</span>
+      <input type="text" formControlName="cardNumber" (input)="onCardInput($event)" placeholder="0000 0000 0000 0000">
+    </label>
+
+    <small *ngIf="form.invalid && form.touched">Preencha corretamente os campos obrigatorios.</small>
+    <button type="submit">Confirmar compra</button>
+  </form>
+
+  <aside class="checkout-summary">
+    <span class="eyebrow">Resumo do pedido</span>
+    <article *ngFor="let item of items()">
+      <div>
+        <strong>{{ item.name }}</strong>
+        <span>Qtd: {{ item.quantity }}</span>
+      </div>
+      <span>{{ item.price * item.quantity | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
+    </article>
+
+    <div class="checkout-summary__total">
+      <span>Total</span>
+      <strong>{{ total() | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+    </div>
+  </aside>
+</section>

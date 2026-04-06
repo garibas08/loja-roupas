@@ -1,0 +1,32 @@
+<section class="auth-card">
+  <div>
+    <span class="eyebrow">Cadastro</span>
+    <h1>Crie sua conta</h1>
+    <p>Salvamos os dados no navegador para simular a experiencia completa do frontend.</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      <span>Nome</span>
+      <input type="text" formControlName="name" placeholder="Seu nome completo">
+      <small *ngIf="form.controls.name.touched && form.controls.name.invalid">Informe seu nome.</small>
+    </label>
+
+    <label>
+      <span>Email</span>
+      <input type="email" formControlName="email" placeholder="voce@exemplo.com">
+      <small *ngIf="form.controls.email.touched && form.controls.email.invalid">Informe um email valido.</small>
+    </label>
+
+    <label>
+      <span>Senha</span>
+      <input type="password" formControlName="password" placeholder="Minimo de 6 caracteres">
+      <small *ngIf="form.controls.password.touched && form.controls.password.invalid">A senha precisa ter ao menos 6 caracteres.</small>
+    </label>
+
+    <button type="submit">Cadastrar</button>
+  </form>
+
+  <p class="message" *ngIf="message">{{ message }}</p>
+  <p class="helper">Ja possui conta? <a routerLink="/login">Faca login</a></p>
+</section>

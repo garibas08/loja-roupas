@@ -1,0 +1,59 @@
+<header class="header">
+  <div class="header__inner">
+    <a routerLink="/" class="brand">
+      <img src="/assets/produtos/logo.jpg" alt="Fatec Store" class="brand__logo">
+      <div>
+        <span class="eyebrow">Moda urbana</span>
+        <strong>Fatec Store</strong>
+      </div>
+    </a>
+
+    <label class="search">
+      <span>Pesquisar</span>
+      <input
+        type="search"
+        [ngModel]="search"
+        (ngModelChange)="updateSearch($event)"
+        placeholder="Busque por nome do produto"
+      >
+    </label>
+
+    <div class="header__actions">
+      <div class="theme-switcher">
+        <button class="theme-button" type="button" (click)="toggleThemeMenu()" aria-label="Escolher tema">
+          Tema
+        </button>
+
+        <div class="theme-menu" *ngIf="themeMenuOpen()">
+          <button type="button" [class.active]="currentTheme() === 'claro'" (click)="selectTheme('claro')">
+            Tema Claro
+          </button>
+          <button type="button" [class.active]="currentTheme() === 'escuro'" (click)="selectTheme('escuro')">
+            Tema Escuro
+          </button>
+        </div>
+      </div>
+
+      <button class="menu-toggle" type="button" (click)="toggleMenu()" aria-label="Abrir menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="nav" [class.nav--open]="menuOpen()">
+        <a routerLink="/">Home</a>
+        <a routerLink="/cadastro">Cadastro</a>
+        <a routerLink="/login">{{ user() ? 'Minha conta' : 'Login' }}</a>
+        <a routerLink="/carrinho" class="cart-link">
+          Carrinho
+          <span>{{ cartCount() }}</span>
+        </a>
+        <button *ngIf="user()" type="button" class="nav__action" (click)="logout()">Sair</button>
+      </nav>
+    </div>
+  </div>
+
+  <div class="header__status" *ngIf="user() as currentUser">
+    <span>Logado como {{ currentUser.name }}</span>
+  </div>
+</header>

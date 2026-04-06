@@ -1,0 +1,32 @@
+<section class="confirmation" *ngIf="order() as currentOrder; else noOrder">
+  <span class="eyebrow">Pedido finalizado</span>
+  <h1>Compra realizada com sucesso</h1>
+  <p>Pedido {{ currentOrder.id }} criado em {{ currentOrder.createdAt | date: 'dd/MM/yyyy HH:mm' }}.</p>
+
+  <div class="confirmation__summary">
+    <article *ngFor="let item of currentOrder.items">
+      <div>
+        <strong>{{ item.name }}</strong>
+        <span>Quantidade: {{ item.quantity }}</span>
+      </div>
+      <span>{{ item.price * item.quantity | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
+    </article>
+  </div>
+
+  <div class="confirmation__meta">
+    <p><strong>Cliente:</strong> {{ currentOrder.customer.name }}</p>
+    <p><strong>Endereco:</strong> {{ currentOrder.customer.address }}, {{ currentOrder.customer.number }} - {{ currentOrder.customer.city }}</p>
+    <p><strong>CEP:</strong> {{ currentOrder.customer.cep }}</p>
+    <p><strong>Pagamento:</strong> {{ currentOrder.customer.paymentMethod }}</p>
+    <p><strong>Total:</strong> {{ currentOrder.total | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</p>
+  </div>
+
+  <a routerLink="/">Voltar para Home</a>
+</section>
+
+<ng-template #noOrder>
+  <section class="confirmation">
+    <h1>Nenhum pedido encontrado</h1>
+    <a routerLink="/">Voltar para Home</a>
+  </section>
+</ng-template>

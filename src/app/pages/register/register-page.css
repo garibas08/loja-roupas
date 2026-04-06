@@ -1,0 +1,53 @@
+.auth-card {
+  width: min(520px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 1.5rem;
+  padding: 2rem;
+  border-radius: 32px;
+  background: var(--rt-surface);
+}
+
+.auth-card h1,
+.auth-card p {
+  margin: 0.35rem 0 0;
+}
+
+.auth-card p,
+.auth-card small,
+.message,
+.helper {
+  color: var(--rt-muted);
+}
+
+.auth-card form {
+  display: grid;
+  gap: 1rem;
+}
+
+.auth-card label {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.auth-card input,
+.auth-card button {
+  border-radius: 18px;
+  padding: 0.95rem 1rem;
+  border: 1px solid var(--rt-border);
+  font: inherit;
+  background: var(--rt-surface-strong);
+  color: var(--rt-text);
+}
+
+.auth-card button {
+  border: 0;
+  background: var(--rt-primary);
+  color: white;
+  cursor: pointer;
+}
+
+.helper a {
+  color: var(--rt-primary);
+  font-weight: 700;
+}

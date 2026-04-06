@@ -1,0 +1,26 @@
+<section class="auth-card">
+  <div>
+    <span class="eyebrow">Entrar</span>
+    <h1>Acesse sua conta</h1>
+    <p>Use seu email e senha para continuar comprando.</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      <span>Email</span>
+      <input type="email" formControlName="email" placeholder="voce@exemplo.com">
+      <small *ngIf="form.controls.email.touched && form.controls.email.invalid">Informe um email valido.</small>
+    </label>
+
+    <label>
+      <span>Senha</span>
+      <input type="password" formControlName="password" placeholder="Minimo de 6 caracteres">
+      <small *ngIf="form.controls.password.touched && form.controls.password.invalid">Informe uma senha valida.</small>
+    </label>
+
+    <button type="submit">Entrar</button>
+  </form>
+
+  <p class="message" *ngIf="message">{{ message }}</p>
+  <p class="helper">Ainda nao tem conta? <a routerLink="/cadastro">Cadastre-se</a></p>
+</section>
