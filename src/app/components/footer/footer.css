@@ -7,21 +7,32 @@
 .footer__inner {
   width: min(1180px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: 2rem 0 2.5rem;
+  padding: 2rem 0 1.35rem;
   display: flex;
   justify-content: space-between;
   gap: 2rem;
 }
 
+.footer__content {
+  max-width: 42rem;
+}
+
 .footer h2 {
   margin: 0.35rem 0 0.75rem;
-  max-width: 12ch;
+  max-width: 14ch;
 }
 
 .footer p {
-  max-width: 40rem;
   margin: 0;
   color: var(--rt-muted);
+  line-height: 1.65;
+}
+
+.footer__aside {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+  align-content: start;
 }
 
 .footer__links {
@@ -35,9 +46,180 @@
   font-weight: 600;
 }
 
+.footer__contact-button,
+.contact-modal__primary,
+.contact-modal__secondary,
+.contact-modal__close {
+  font: inherit;
+  border: 0;
+}
+
+.footer__contact-button,
+.contact-modal__primary,
+.contact-modal__secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.85rem 1.2rem;
+  cursor: pointer;
+}
+
+.footer__contact-button,
+.contact-modal__primary {
+  background: var(--rt-primary);
+  color: white;
+  box-shadow: 0 16px 28px rgba(17, 69, 65, 0.18);
+}
+
+.contact-modal__secondary {
+  background: color-mix(in srgb, var(--rt-primary) 12%, transparent);
+  color: var(--rt-primary);
+}
+
+.footer__developer {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 0 0 2rem;
+  border-top: 1px solid color-mix(in srgb, var(--rt-border) 88%, transparent);
+  padding-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.75rem;
+  color: var(--rt-muted);
+  font-size: 0.94rem;
+}
+
+.footer__developer a {
+  color: var(--rt-primary);
+  word-break: break-word;
+}
+
+.contact-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(10, 16, 16, 0.55);
+  backdrop-filter: blur(10px);
+}
+
+.contact-modal__dialog {
+  width: min(100%, 560px);
+  border-radius: 30px;
+  border: 1px solid var(--rt-border);
+  background: var(--rt-surface);
+  box-shadow: 0 30px 70px rgba(10, 16, 16, 0.22);
+  padding: 1.5rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.contact-modal__header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.contact-modal__header h3 {
+  margin: 0.35rem 0 0;
+  max-width: 18ch;
+}
+
+.contact-modal__close {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--rt-primary) 10%, transparent);
+  color: var(--rt-primary);
+  cursor: pointer;
+}
+
+.contact-modal__intro {
+  color: var(--rt-muted);
+}
+
+.contact-modal__form {
+  display: grid;
+  gap: 0.95rem;
+}
+
+.contact-modal__field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.contact-modal__field span {
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.contact-modal__field input,
+.contact-modal__field select,
+.contact-modal__field textarea {
+  width: 100%;
+  border: 1px solid var(--rt-border);
+  border-radius: 18px;
+  padding: 0.9rem 1rem;
+  background: color-mix(in srgb, var(--rt-surface-strong) 90%, white 10%);
+  color: var(--rt-text);
+  font: inherit;
+  outline: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.contact-modal__field textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.contact-modal__field input:focus,
+.contact-modal__field select:focus,
+.contact-modal__field textarea:focus {
+  border-color: color-mix(in srgb, var(--rt-primary) 65%, white 35%);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--rt-primary) 16%, transparent);
+}
+
+.contact-modal__success {
+  margin: 0;
+  border-radius: 18px;
+  padding: 0.85rem 1rem;
+  background: color-mix(in srgb, var(--rt-primary) 12%, transparent);
+  color: var(--rt-primary);
+}
+
+.contact-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
 @media (max-width: 720px) {
   .footer__inner {
     width: min(100% - 1rem, 1180px);
     flex-direction: column;
+  }
+
+  .footer__developer {
+    width: min(100% - 1rem, 1180px);
+    font-size: 0.88rem;
+  }
+
+  .contact-modal__dialog {
+    padding: 1.15rem;
+    border-radius: 24px;
+  }
+
+  .contact-modal__actions {
+    flex-direction: column-reverse;
+  }
+
+  .contact-modal__secondary,
+  .contact-modal__primary,
+  .footer__contact-button {
+    width: 100%;
   }
 }

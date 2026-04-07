@@ -1,25 +1,53 @@
-<section class="detail" *ngIf="product as item; else notFound">
-  <img [src]="item.image" [alt]="item.name" class="detail__image">
+<section class="detail-shell" *ngIf="product() as item; else notFound">
+  <button
+    type="button"
+    class="detail-nav detail-nav--prev"
+    (click)="goToSiblingProduct('prev')"
+    [disabled]="!previousProduct()"
+    [attr.aria-label]="previousProduct() ? 'Ver produto anterior: ' + previousProduct()!.name : 'Sem produto anterior'"
+    [attr.title]="previousProduct() ? 'Anterior: ' + previousProduct()!.name : null"
+  >
+    <span aria-hidden="true">&lt;</span>
+  </button>
 
-  <div class="detail__content">
-    <span class="eyebrow">{{ item.category }}</span>
-    <h1>{{ item.name }}</h1>
-    <strong>{{ item.price | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
-    <p>{{ item.description }}</p>
+  <section
+    class="detail"
+    [class.detail--slide-next]="isTransitioning() && transitionDirection() === 'next'"
+    [class.detail--slide-prev]="isTransitioning() && transitionDirection() === 'prev'"
+  >
+    <img [src]="item.image" [alt]="item.name" class="detail__image">
 
-    <div class="detail__sizes">
-      <span>Tamanhos disponiveis</span>
-      <div>
-        <span *ngFor="let size of item.sizes">{{ size }}</span>
+    <div class="detail__content">
+      <span class="eyebrow">{{ item.category }}</span>
+      <h1>{{ item.name }}</h1>
+      <strong>{{ item.price | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+      <p>{{ item.description }}</p>
+
+      <div class="detail__sizes">
+        <span>Tamanhos disponiveis</span>
+        <div>
+          <span *ngFor="let size of item.sizes">{{ size }}</span>
+        </div>
+      </div>
+
+      <div class="detail__actions">
+        <button type="button" (click)="addToCart()">Adicionar ao carrinho</button>
+        <a routerLink="/">Voltar</a>
+        <a routerLink="/carrinho">Ir para o carrinho</a>
       </div>
     </div>
+  </section>
 
-    <div class="detail__actions">
-      <button type="button" (click)="addToCart()">Adicionar ao carrinho</button>
-      <a routerLink="/">Voltar</a>
-      <a routerLink="/carrinho">Ir para o carrinho</a>
-    </div>
-  </div>
+  <button
+    type="button"
+    class="detail-nav detail-nav--next"
+    (click)="goToSiblingProduct('next')"
+    [disabled]="!nextProduct()"
+    [attr.aria-label]="nextProduct() ? 'Ver proximo produto: ' + nextProduct()!.name : 'Sem proximo produto'"
+    [attr.title]="nextProduct() ? 'Proximo: ' + nextProduct()!.name : null"
+  >
+    <span aria-hidden="true">&gt;</span>
+  </button>
 </section>
 
 <ng-template #notFound>

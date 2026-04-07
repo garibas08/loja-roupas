@@ -1,34 +1,55 @@
 <section class="showcase">
   <div class="showcase__intro">
-    <span class="eyebrow">Colecao 2026</span>
-    <h1>Moda urbana com vitrine em movimento e experiencia premium no front.</h1>
+    <span class="eyebrow">Colecao em destaque</span>
+    <h1>Looks pensados para quem quer se vestir bem em qualquer momento do dia.</h1>
     <p>
-      Explore destaque por destaque no carrossel, navegue pela colecao e acompanhe sua conta e carrinho sem depender
-      de backend.
+      Descubra calcas, camisas, jaquetas, blusas e acessorios que unem conforto, estilo e praticidade para renovar o
+      seu guarda-roupa com personalidade.
     </p>
 
     <div class="showcase__actions">
-      <a routerLink="/" class="showcase__primary">Explorar colecao</a>
-      <a routerLink="/carrinho" class="showcase__secondary">Abrir carrinho</a>
+      <a routerLink="/" class="showcase__primary">Ver novidades</a>
+      <a routerLink="/carrinho" class="showcase__secondary">Ir para o carrinho</a>
     </div>
 
     <div class="showcase__stats">
       <article>
         <strong>{{ featuredProducts().length }}</strong>
-        <span>Destaques no carrossel</span>
+        <span>Looks em destaque</span>
       </article>
       <article>
         <strong>{{ products().length }}</strong>
-        <span>Produtos filtrados</span>
+        <span>Pecas no catalogo</span>
       </article>
       <article>
         <strong>{{ cartCount() }}</strong>
-        <span>Itens no carrinho</span>
+        <span>Itens salvos</span>
       </article>
     </div>
 
-    <div class="showcase__chips">
-      <span *ngFor="let category of highlightCategories()">{{ category }}</span>
+    <div class="showcase__filters">
+      <span class="showcase__filters-label">Compre por categoria</span>
+
+      <div class="showcase__chips">
+        <button
+          type="button"
+          class="showcase__chip"
+          [class.is-active]="activeCategory() === 'Todos'"
+          (click)="showAllProducts()"
+        >
+          Todas
+        </button>
+
+        <button
+          type="button"
+          class="showcase__chip"
+          *ngFor="let category of categories; trackBy: trackByCategory"
+          [class.is-active]="activeCategory() === category"
+          (click)="toggleCategory(category)"
+        >
+          {{ category }}
+        </button>
+      </div>
     </div>
   </div>
 
@@ -37,7 +58,12 @@
       <div class="showcase__track" [style.transform]="'translateX(-' + activeSlideIndex() * 100 + '%)'">
         <article class="showcase__slide" *ngFor="let product of featuredProducts(); trackBy: trackById">
           <div class="showcase__media">
-            <img [src]="product.image" [alt]="product.name">
+            <img
+              [src]="product.image"
+              [alt]="product.name"
+              [style.transform]="'scale(' + getFeaturedImageScale(product.id) + ')'"
+              [style.object-position]="getFeaturedImagePosition(product.id)"
+            >
           </div>
 
           <div class="showcase__content">
@@ -82,7 +108,7 @@
 <section class="section-heading">
   <div>
     <span class="eyebrow">Catalogo</span>
-    <h2>Produtos em destaque</h2>
+    <h2>Escolha seu proximo favorito</h2>
   </div>
 
   <div class="section-heading__meta">
@@ -95,7 +121,7 @@
 </section>
 
 <section class="products-grid" *ngIf="products().length; else emptyState">
-  <article class="catalog-card" *ngFor="let product of products(); trackBy: trackById">
+  <article class="catalog-card" #productCard *ngFor="let product of products(); trackBy: trackById">
     <button class="catalog-card__image-button" type="button" (click)="goToProduct(product.id)">
       <img [src]="product.image" [alt]="product.name" class="catalog-card__image">
     </button>
@@ -123,6 +149,6 @@
 <ng-template #emptyState>
   <section class="empty">
     <h3>Nenhum produto encontrado</h3>
-    <p>Tente buscar por outro nome na barra de pesquisa.</p>
+    <p>Tente ajustar a busca ou trocar o filtro de categoria.</p>
   </section>
 </ng-template>

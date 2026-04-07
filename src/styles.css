@@ -12,6 +12,15 @@
   --rt-border: rgba(20, 34, 33, 0.12);
   --rt-shadow-soft: 0 22px 54px rgba(17, 28, 28, 0.08);
   --rt-shadow-strong: 0 28px 80px rgba(10, 18, 18, 0.18);
+  --rt-image-card-ratio: 4 / 5;
+  --rt-image-hero-ratio: 4 / 5;
+  --rt-image-cart-ratio: 4 / 5;
+  --rt-image-detail-ratio: 4 / 5;
+  --rt-banner-height: 520px;
+  --rt-banner-height-mobile: 340px;
+  --rt-catalog-image-height: 360px;
+  --rt-catalog-image-height-tablet: 320px;
+  --rt-catalog-image-height-mobile: 340px;
 }
 
 * {
@@ -105,4 +114,11 @@ body.tema-escuro {
 
 ::selection {
   background: color-mix(in srgb, var(--rt-primary) 28%, transparent);
+}
+
+@media (max-width: 720px) {
+  :root {
+    --rt-banner-height-mobile: 230px;
+    --rt-catalog-image-height-mobile: 165px;
+  }
 }

@@ -1,6 +1,15 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { PRODUCTS } from './products';
-import { CartItem, CheckoutData, LoggedUser, OrderSummary, Product, RegisteredUser, StoredCartItem } from './models';
+import {
+  CartItem,
+  CheckoutData,
+  LoggedUser,
+  OrderSummary,
+  Product,
+  ProductCategoryFilter,
+  RegisteredUser,
+  StoredCartItem
+} from './models';
 
 const CART_KEY = 'store-cart';
 const USERS_KEY = 'store-users';
@@ -11,6 +20,7 @@ const LAST_ORDER_KEY = 'store-last-order';
 export class StoreService {
   readonly products = signal<Product[]>(PRODUCTS);
   readonly searchTerm = signal('');
+  readonly activeCategory = signal<ProductCategoryFilter>('Todos');
   readonly cart = signal<CartItem[]>(this.readCartStorage());
   readonly users = signal<RegisteredUser[]>(this.readStorage<RegisteredUser[]>(USERS_KEY, []));
   readonly loggedUser = signal<LoggedUser | null>(this.readLoggedUserStorage());
@@ -20,7 +30,21 @@ export class StoreService {
 
   readonly filteredProducts = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
-    return term ? this.products().filter((product) => product.name.toLowerCase().includes(term)) : this.products();
+    const category = this.activeCategory();
+
+    return this.products().filter((product) => {
+      const matchesCategory = category === 'Todos' || product.category === category;
+
+      if (!matchesCategory) {
+        return false;
+      }
+
+      if (!term) {
+        return true;
+      }
+
+      return [product.name, product.description, product.category].some((value) => value.toLowerCase().includes(term));
+    });
   });
 
   readonly cartCount = computed(() => this.cart().reduce((sum, item) => sum + item.quantity, 0));
@@ -28,6 +52,10 @@ export class StoreService {
 
   setSearchTerm(term: string): void {
     this.searchTerm.set(term);
+  }
+
+  setActiveCategory(category: ProductCategoryFilter): void {
+    this.activeCategory.set(category);
   }
 
   getAllProducts(): Product[] {
@@ -149,8 +177,13 @@ export class StoreService {
   }
 
   private setLoggedUser(user: LoggedUser): void {
-    this.loggedUser.set(user);
-    localStorage.setItem(LOGGED_USER_KEY, JSON.stringify(user));
+    const sessionUser: LoggedUser = {
+      name: user.name,
+      email: user.email
+    };
+
+    this.loggedUser.set(sessionUser);
+    localStorage.setItem(LOGGED_USER_KEY, JSON.stringify(sessionUser));
   }
 
   private readLoggedUserStorage(): LoggedUser | null {
@@ -160,11 +193,10 @@ export class StoreService {
       return null;
     }
 
-    if (stored.name && stored.password) {
+    if (stored.name) {
       return {
         name: stored.name,
-        email: stored.email,
-        password: stored.password
+        email: stored.email
       } satisfies LoggedUser;
     }
 
@@ -174,8 +206,13 @@ export class StoreService {
       return null;
     }
 
-    localStorage.setItem(LOGGED_USER_KEY, JSON.stringify(registeredUser));
-    return registeredUser;
+    const sessionUser: LoggedUser = {
+      name: registeredUser.name,
+      email: registeredUser.email
+    };
+
+    localStorage.setItem(LOGGED_USER_KEY, JSON.stringify(sessionUser));
+    return sessionUser;
   }
 
   private updateCart(cart: CartItem[]): void {

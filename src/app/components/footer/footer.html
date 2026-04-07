@@ -1,19 +1,99 @@
 <footer class="footer">
   <div class="footer__inner">
-    <div>
-      <span class="eyebrow">Frontend completo</span>
-      <h2>Uma loja de moda pronta para evoluir</h2>
+    <div class="footer__content">
+      <span class="eyebrow">Atendimento</span>
+      <h2>Estamos por aqui para ouvir voce</h2>
       <p>
-        Projeto responsivo com vitrine em carrossel, area de conta local e fluxo completo de compra apenas no
-        frontend com Angular, HTML, CSS, TypeScript e armazenamento local.
+        Compartilhe sua avaliacao, envie uma recomendacao ou conte o que podemos melhorar para deixar a sua
+        experiencia de compra ainda melhor.
       </p>
     </div>
 
-    <div class="footer__links">
-      <a routerLink="/">Vitrine</a>
-      <a routerLink="/carrinho">Carrinho</a>
-      <a routerLink="/checkout">Checkout</a>
-      <a [routerLink]="user() ? '/minha-conta' : '/login'">{{ user() ? 'Minha conta' : 'Login' }}</a>
+    <div class="footer__aside">
+      <div class="footer__links">
+        <a routerLink="/">Vitrine</a>
+        <a routerLink="/carrinho">Carrinho</a>
+        <a routerLink="/checkout">Checkout</a>
+        <a [routerLink]="user() ? '/minha-conta' : '/login'">{{ user() ? 'Minha conta' : 'Login' }}</a>
+      </div>
+
+      <button type="button" class="footer__contact-button" (click)="openContact()">Contate-nos</button>
     </div>
   </div>
+
+  <div class="footer__developer">
+    <span>desenvolvido por: Gabriel Garibaldi</span>
+    <span>linkedin:</span>
+    <a
+      href="https://www.linkedin.com/in/gabriel-garibaldi-de-cataldi-759662274/"
+      target="_blank"
+      rel="noreferrer"
+    >
+      https://www.linkedin.com/in/gabriel-garibaldi-de-cataldi-759662274/
+    </a>
+    <span>github:</span>
+    <a href="https://github.com/garibas08" target="_blank" rel="noreferrer">https://github.com/garibas08</a>
+  </div>
 </footer>
+
+<div class="contact-modal" *ngIf="isContactOpen()" (click)="closeContact()">
+  <div
+    class="contact-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="contactModalTitle"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="contact-modal__header">
+      <div>
+        <span class="eyebrow">Contate-nos</span>
+        <h3 id="contactModalTitle">Envie sua opiniao para a Garibas Store</h3>
+      </div>
+
+      <button type="button" class="contact-modal__close" aria-label="Fechar janela de contato" (click)="closeContact()">
+        x
+      </button>
+    </div>
+
+    <p class="contact-modal__intro">
+      Escreva uma avaliacao, recomendacao ou reclamacao. Seu retorno ajuda a loja a melhorar.
+    </p>
+
+    <form #contactForm="ngForm" class="contact-modal__form" (ngSubmit)="submitFeedback(contactForm)">
+      <label class="contact-modal__field">
+        <span>Tipo de mensagem</span>
+        <select name="feedbackType" [(ngModel)]="feedbackType">
+          <option *ngFor="let topic of contactTopics" [value]="topic.value">{{ topic.label }}</option>
+        </select>
+      </label>
+
+      <label class="contact-modal__field">
+        <span>Nome</span>
+        <input type="text" name="feedbackName" [(ngModel)]="feedbackName" required placeholder="Seu nome">
+      </label>
+
+      <label class="contact-modal__field">
+        <span>E-mail</span>
+        <input type="email" name="feedbackEmail" [(ngModel)]="feedbackEmail" required placeholder="voce@email.com">
+      </label>
+
+      <label class="contact-modal__field">
+        <span>Mensagem</span>
+        <textarea
+          name="feedbackMessage"
+          [(ngModel)]="feedbackMessage"
+          required
+          rows="5"
+          placeholder="Conte para nos como foi a sua experiencia."
+        ></textarea>
+      </label>
+
+      <p class="contact-modal__success" *ngIf="feedbackSaved()">Mensagem registrada com sucesso. Obrigado pelo contato.</p>
+
+      <div class="contact-modal__actions">
+        <button type="button" class="contact-modal__secondary" (click)="closeContact()">Cancelar</button>
+        <button type="submit" class="contact-modal__primary">Enviar mensagem</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -27,21 +27,24 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 1rem;
   color: var(--rt-text);
 }
 
 .brand__logo {
-  width: 56px;
-  height: 56px;
-  border-radius: 18px;
-  object-fit: cover;
+  width: 84px;
+  height: 84px;
+  border-radius: 24px;
+  padding: 0.45rem;
+  object-fit: contain;
+  background: color-mix(in srgb, var(--rt-surface) 84%, white 16%);
+  border: 1px solid color-mix(in srgb, var(--rt-border) 88%, white 12%);
   box-shadow: var(--rt-shadow-soft);
 }
 
 .brand strong {
   display: block;
-  font-size: 1.18rem;
+  font-size: 1.24rem;
 }
 
 .search {
@@ -223,5 +226,41 @@
   .header__inner,
   .header__status {
     width: min(100% - 1rem, 1180px);
+  }
+
+  .header__inner {
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+  }
+
+  .brand {
+    gap: 0.8rem;
+  }
+
+  .brand__logo {
+    width: 68px;
+    height: 68px;
+    border-radius: 18px;
+    padding: 0.36rem;
+  }
+
+  .brand strong {
+    font-size: 1.08rem;
+  }
+
+  .search input {
+    padding: 0.8rem 0.9rem;
+  }
+
+  .theme-button,
+  .nav a,
+  .nav__action {
+    padding: 0.65rem 0.9rem;
+  }
+
+  .menu-toggle {
+    width: 44px;
+    height: 44px;
+    padding: 0.7rem;
   }
 }

@@ -1,9 +1,12 @@
+export type ProductCategory = 'Masculino' | 'Feminino' | 'Acessorios' | 'Infantil';
+export type ProductCategoryFilter = ProductCategory | 'Todos';
+
 export interface Product {
   id: number;
   name: string;
   price: number;
   image: string;
-  category: string;
+  category: ProductCategory;
   description: string;
   sizes: string[];
 }
@@ -32,7 +35,7 @@ export interface RegisteredUser {
   password: string;
 }
 
-export interface LoggedUser extends RegisteredUser {}
+export type LoggedUser = Omit<RegisteredUser, 'password'>;
 
 export type PaymentMethod = 'Cartao' | 'Pix' | 'Boleto';
 
