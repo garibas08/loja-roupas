@@ -1,0 +1,185 @@
+<section class="showcase">
+  <div class="showcase__intro">
+    <span class="eyebrow">Coleção em destaque</span>
+    <h1>Looks pensados para quem quer se vestir bem em qualquer momento do dia.</h1>
+    <p>
+      Descubra calças, camisas, jaquetas, blusas e acessórios que unem conforto, estilo e praticidade para renovar o
+      seu guarda-roupa com personalidade.
+    </p>
+
+    <div class="showcase__actions">
+      <a routerLink="/" class="showcase__primary">Ver novidades</a>
+      <a routerLink="/carrinho" class="showcase__secondary">Ir para o carrinho</a>
+    </div>
+
+    <div class="showcase__stats">
+      <article>
+        <strong>{{ featuredProducts().length }}</strong>
+        <span>Looks em destaque</span>
+      </article>
+      <article>
+        <strong>{{ products().length }}</strong>
+        <span>Peças no catalogo</span>
+      </article>
+      <article>
+        <strong>{{ cartCount() }}</strong>
+        <span>Itens salvos</span>
+      </article>
+    </div>
+
+    <div class="showcase__filters">
+      <span class="showcase__filters-label">Compre por categoria</span>
+
+      <div class="showcase__chips">
+        <button
+          type="button"
+          class="showcase__chip"
+          [class.is-active]="activeCategory() === 'Todos'"
+          (click)="showAllProducts()"
+        >
+          Todas
+        </button>
+
+        <button
+          type="button"
+          class="showcase__chip"
+          *ngFor="let category of categories; trackBy: trackByCategory"
+          [class.is-active]="activeCategory() === category"
+          (click)="toggleCategory(category)"
+        >
+          {{ category }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="showcase__carousel" *ngIf="featuredProducts().length">
+    <div class="showcase__window">
+      <div class="showcase__track" [style.transform]="'translateX(-' + activeSlideIndex() * 100 + '%)'">
+        <article class="showcase__slide" *ngFor="let product of featuredProducts(); trackBy: trackById">
+          <div class="showcase__media">
+            <img
+              [src]="product.image"
+              [alt]="product.name"
+              [style.transform]="'scale(' + getFeaturedImageScale(product.id) + ')'"
+              [style.object-position]="getFeaturedImagePosition(product.id)"
+            >
+          </div>
+
+          <div class="showcase__content">
+            <span class="showcase__tag">{{ product.category }}</span>
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <strong>{{ product.price | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+
+            <div class="showcase__slide-actions">
+              <button type="button" (click)="goToProduct(product.id)">Ver detalhes</button>
+              <button type="button" class="showcase__slide-secondary" (click)="addToCart(product.id)">
+                Adicionar ao carrinho
+              </button>
+              <button
+                type="button"
+                class="showcase__slide-secondary"
+                [class.is-favorite]="isWishlisted(product.id)"
+                (click)="toggleWishlist(product.id)"
+              >
+                {{ isWishlisted(product.id) ? 'Remover favorito' : 'Favoritar' }}
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="showcase__controls">
+      <button type="button" class="showcase__arrow" (click)="prevSlide()" aria-label="Slide anterior">
+        &#8592;
+      </button>
+
+      <div class="showcase__dots">
+        <button
+          type="button"
+          *ngFor="let product of featuredProducts(); let index = index; trackBy: trackById"
+          [class.is-active]="activeSlideIndex() === index"
+          (click)="selectSlide(index)"
+          [attr.aria-label]="'Ir para o slide de ' + product.name"
+        ></button>
+      </div>
+
+      <button type="button" class="showcase__arrow" (click)="nextSlide()" aria-label="Proximo slide">
+        &#8594;
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="section-heading">
+  <div>
+    <span class="eyebrow">Catalogo</span>
+    <h2>Escolha seu proximo favorito</h2>
+  </div>
+
+  <div class="section-heading__meta">
+    <p>{{ productCountLabel() }}</p>
+    <div class="section-heading__spotlight" *ngIf="activeProduct() as featured">
+      <span>Em foco agora</span>
+      <strong>{{ featured.name }}</strong>
+    </div>
+  </div>
+</section>
+
+<section class="products-grid products-grid--loading" *ngIf="productsLoading(); else productsContent">
+  <article class="catalog-card catalog-card--skeleton" *ngFor="let item of [1, 2, 3, 4, 5, 6]">
+    <span class="catalog-skeleton catalog-skeleton--image"></span>
+    <div class="catalog-card__content">
+      <span class="catalog-skeleton catalog-skeleton--short"></span>
+      <span class="catalog-skeleton catalog-skeleton--title"></span>
+      <span class="catalog-skeleton"></span>
+      <span class="catalog-skeleton catalog-skeleton--price"></span>
+      <span class="catalog-skeleton catalog-skeleton--actions"></span>
+    </div>
+  </article>
+</section>
+
+<ng-template #productsContent>
+  <section class="products-grid" *ngIf="products().length; else emptyState">
+    <article class="catalog-card" #productCard *ngFor="let product of products(); trackBy: trackById">
+      <button class="catalog-card__image-button" type="button" (click)="goToProduct(product.id)">
+        <img [src]="product.image" [alt]="product.name" class="catalog-card__image">
+      </button>
+
+      <div class="catalog-card__content">
+        <span class="catalog-card__category">{{ product.category }}</span>
+        <button class="catalog-card__title" type="button" (click)="goToProduct(product.id)">
+          {{ product.name }}
+        </button>
+        <p class="catalog-card__description">{{ product.description }}</p>
+        <strong class="catalog-card__price">{{ product.price | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+
+        <div class="catalog-card__sizes">
+          <span *ngFor="let size of product.sizes">{{ size }}</span>
+        </div>
+
+        <div class="catalog-card__actions">
+          <button class="catalog-card__details" type="button" (click)="goToProduct(product.id)">Ver detalhes</button>
+          <button class="catalog-card__add" type="button" (click)="addToCart(product.id)">Adicionar</button>
+          <button
+            class="catalog-card__details catalog-card__favorite"
+            type="button"
+            [class.is-favorite]="isWishlisted(product.id)"
+            (click)="toggleWishlist(product.id)"
+          >
+            {{ isWishlisted(product.id) ? 'Favorito' : 'Favoritar' }}
+          </button>
+        </div>
+      </div>
+    </article>
+  </section>
+</ng-template>
+
+<ng-template #emptyState>
+  <section class="empty">
+    <h3>Nenhum produto encontrado</h3>
+    <p>Tente ajustar a busca ou trocar o filtro de categoria.</p>
+  </section>
+</ng-template>

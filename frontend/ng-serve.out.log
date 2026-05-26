@@ -1,0 +1,17 @@
+
+> web02@0.0.0 start
+> ng serve --host 127.0.0.1 --port 4200
+
+> Building...
+√ Building...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 356.20 kB | 
+styles.css          | styles        |   4.16 kB | 
+
+                    | Initial total | 360.36 kB
+
+Application bundle generation complete. [3.100 seconds] - 2026-05-26T17:12:54.883Z
+
+Watch mode enabled. Watching for file changes...
+NOTE: Raw file sizes do not reflect development server per-request transformations.
+  ➜  Local:   http://127.0.0.1:4200/
