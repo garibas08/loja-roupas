@@ -1,7 +1,7 @@
 <header class="header">
   <div class="header__inner">
     <a routerLink="/" class="brand">
-      <img src="/assets/produtos/Logoo.png" alt="Garibas Store" class="brand__logo">
+      <img src="/assets/produtos/Logoo.png" alt="Garibas Store" class="brand__logo" />
       <div>
         <span class="eyebrow">Fashion studio</span>
         <strong>Garibas Store</strong>
@@ -9,26 +9,38 @@
     </a>
 
     <label class="search">
-      
       <input
         type="search"
         [ngModel]="search"
         (ngModelChange)="updateSearch($event)"
         placeholder="Busque por nome do produto"
-      >
+      />
     </label>
 
     <div class="header__actions">
       <div class="theme-switcher">
-        <button class="theme-button" type="button" (click)="toggleThemeMenu()" aria-label="Escolher tema">
+        <button
+          class="theme-button"
+          type="button"
+          (click)="toggleThemeMenu()"
+          aria-label="Escolher tema"
+        >
           Tema
         </button>
 
         <div class="theme-menu" *ngIf="themeMenuOpen()">
-          <button type="button" [class.active]="currentTheme() === 'claro'" (click)="selectTheme('claro')">
+          <button
+            type="button"
+            [class.active]="currentTheme() === 'claro'"
+            (click)="selectTheme('claro')"
+          >
             Tema Claro
           </button>
-          <button type="button" [class.active]="currentTheme() === 'escuro'" (click)="selectTheme('escuro')">
+          <button
+            type="button"
+            [class.active]="currentTheme() === 'escuro'"
+            (click)="selectTheme('escuro')"
+          >
             Tema Escuro
           </button>
         </div>
@@ -44,6 +56,7 @@
         <a routerLink="/">Home</a>
         <a *ngIf="!user()" routerLink="/cadastro">Cadastro</a>
         <a *ngIf="!user()" routerLink="/login" class="nav__pill">Login</a>
+        <a *ngIf="isAdmin()" routerLink="/admin" class="nav__pill">Admin</a>
         <a *ngIf="user()" routerLink="/minha-conta" class="nav__pill">Minha conta</a>
         <a routerLink="/favoritos" class="wishlist-link">
           Favoritos
@@ -60,6 +73,7 @@
 
   <div class="header__status" *ngIf="user() as currentUser">
     <span>Logado como {{ currentUser.name }}</span>
+    <span class="header__badge" *ngIf="currentUser.role === 'ADMIN'">Administrador</span>
     <strong>{{ currentUser.email }}</strong>
   </div>
 </header>

@@ -16,7 +16,11 @@
 .account-page__intro {
   background:
     radial-gradient(circle at top right, rgba(210, 148, 92, 0.18), transparent 34%),
-    linear-gradient(135deg, color-mix(in srgb, var(--rt-primary) 12%, var(--rt-surface)) 0%, var(--rt-surface) 100%);
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--rt-primary) 12%, var(--rt-surface)) 0%,
+      var(--rt-surface) 100%
+    );
 }
 
 .account-page__intro h1,
@@ -49,8 +53,7 @@
 
 .account-card--highlight {
   background:
-    linear-gradient(145deg, rgba(13, 32, 34, 0.94), rgba(27, 80, 74, 0.9)),
-    var(--rt-surface);
+    linear-gradient(145deg, rgba(13, 32, 34, 0.94), rgba(27, 80, 74, 0.9)), var(--rt-surface);
   color: #f8faf8;
 }
 

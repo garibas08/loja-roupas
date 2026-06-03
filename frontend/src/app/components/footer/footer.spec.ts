@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { FooterComponent } from './footer';
+import { RodapeComponent } from './footer';
 
-describe('FooterComponent', () => {
+describe('RodapeComponent', () => {
   beforeEach(async () => {
     localStorage.clear();
     document.body.style.overflow = '';
 
     await TestBed.configureTestingModule({
-      imports: [FooterComponent],
-      providers: [provideRouter([])]
+      imports: [RodapeComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 
@@ -17,14 +17,14 @@ describe('FooterComponent', () => {
     document.body.style.overflow = '';
   });
 
-  it('should render the contact button and developer links', () => {
-    const fixture = TestBed.createComponent(FooterComponent);
+  it('exibe o botão de contato e os links dos desenvolvedores', () => {
+    const fixture = TestBed.createComponent(RodapeComponent);
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
     const contactButton = compiled.querySelector('.footer__contact-button');
     const linkedinLink = compiled.querySelector(
-      'a[href="https://www.linkedin.com/in/gabriel-garibaldi-de-cataldi-759662274/"]'
+      'a[href="https://www.linkedin.com/in/gabriel-garibaldi-de-cataldi-759662274/"]',
     );
     const githubLink = compiled.querySelector('a[href="https://github.com/garibas08"]');
 
@@ -34,8 +34,8 @@ describe('FooterComponent', () => {
     expect(githubLink).toBeTruthy();
   });
 
-  it('should save a contact message locally', () => {
-    const fixture = TestBed.createComponent(FooterComponent);
+  it('salva uma mensagem de contato localmente', () => {
+    const fixture = TestBed.createComponent(RodapeComponent);
     const component = fixture.componentInstance;
     fixture.detectChanges();
 
@@ -47,7 +47,7 @@ describe('FooterComponent', () => {
     fixture.detectChanges();
 
     component.submitFeedback({
-      resetForm: () => undefined
+      resetForm: () => undefined,
     } as never);
     fixture.detectChanges();
 
@@ -65,7 +65,7 @@ describe('FooterComponent', () => {
     expect(storedFeedbacks[0]).toMatchObject({
       type: 'recomendacao',
       name: 'Maria',
-      email: 'maria@email.com'
+      email: 'maria@email.com',
     });
   });
 });

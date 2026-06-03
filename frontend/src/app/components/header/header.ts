@@ -3,25 +3,26 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
-import { StoreService } from '../../utils/store.service';
-import { ThemeMode, ThemeService } from '../../utils/theme.service';
+import { LojaServico } from '../../utils/store.service';
+import { ModoTema, TemaServico } from '../../utils/theme.service';
 
 @Component({
   selector: 'app-header',
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './header.html',
-  styleUrl: './header.css'
+  styleUrl: './header.css',
 })
-export class HeaderComponent {
-  private readonly store = inject(StoreService);
+export class CabecalhoComponent {
+  private readonly store = inject(LojaServico);
   private readonly router = inject(Router);
-  private readonly themeService = inject(ThemeService);
+  private readonly themeService = inject(TemaServico);
 
   readonly menuOpen = signal(false);
   readonly themeMenuOpen = signal(false);
   readonly cartCount = this.store.cartCount;
   readonly wishlistCount = this.store.wishlistCount;
   readonly user = this.store.loggedUser;
+  readonly isAdmin = this.store.isAdmin;
   readonly currentTheme = this.themeService.theme;
 
   constructor() {
@@ -51,7 +52,7 @@ export class HeaderComponent {
     this.themeMenuOpen.update((value) => !value);
   }
 
-  selectTheme(theme: ThemeMode): void {
+  selectTheme(theme: ModoTema): void {
     this.themeService.setTheme(theme);
     this.themeMenuOpen.set(false);
   }

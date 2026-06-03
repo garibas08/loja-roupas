@@ -1,0 +1,147 @@
+<section class="admin-page" *ngIf="user() as currentUser; else guestState">
+  <ng-container *ngIf="isAdmin(); else forbiddenState">
+    <div class="admin-page__intro">
+      <span class="eyebrow">Administracao</span>
+      <h1>Produtos da Garibas Store</h1>
+      <p>Cadastre novas pecas no catalogo e remova produtos que nao devem mais aparecer na loja.</p>
+    </div>
+
+    <div class="admin-layout">
+      <article class="admin-card">
+        <span class="eyebrow">Novo produto</span>
+        <h2>Cadastro de produto</h2>
+
+        <form class="admin-form" [formGroup]="form" (ngSubmit)="submit()">
+          <label>
+            <span>Nome</span>
+            <input type="text" formControlName="name" placeholder="Camisa Casual" />
+            <small *ngIf="form.controls.name.touched && form.controls.name.invalid">
+              Informe um nome valido.
+            </small>
+          </label>
+
+          <div class="admin-form__row">
+            <label>
+              <span>Preco</span>
+              <input type="number" min="0.01" step="0.01" formControlName="price" />
+              <small *ngIf="form.controls.price.touched && form.controls.price.invalid">
+                Informe um preco maior que zero.
+              </small>
+            </label>
+
+            <label>
+              <span>Categoria</span>
+              <select formControlName="category">
+                <option *ngFor="let category of categories" [value]="category">
+                  {{ category }}
+                </option>
+              </select>
+            </label>
+          </div>
+
+          <div class="admin-image-field">
+            <span>Imagem</span>
+
+            <div
+              class="admin-image-dropzone"
+              [class.is-dragging]="isDraggingImage"
+              (dragover)="onImageDragOver($event)"
+              (dragleave)="onImageDragLeave($event)"
+              (drop)="onImageDrop($event)"
+            >
+              <ng-container *ngIf="form.controls.image.value as imagePreview; else imagePlaceholder">
+                <img [src]="imagePreview" alt="Previa do produto" />
+              </ng-container>
+
+              <ng-template #imagePlaceholder>
+                <button
+                  type="button"
+                  class="admin-image-placeholder"
+                  aria-label="Inserir foto do produto"
+                  (click)="openImagePicker(imageInput)"
+                >
+                  +
+                </button>
+              </ng-template>
+
+              <div>
+                <button type="button" (click)="openImagePicker(imageInput)">
+                  Clique para inserir foto
+                </button>
+                <small>ou arraste a imagem para esta area</small>
+              </div>
+            </div>
+
+            <input
+              #imageInput
+              class="admin-image-input"
+              type="file"
+              accept="image/*"
+              (change)="onImageSelected($event)"
+            />
+
+            <input type="text" formControlName="image" placeholder="/assets/produtos/logo.jpg" />
+          </div>
+
+          <label>
+            <span>Tamanhos</span>
+            <input type="text" formControlName="sizesText" placeholder="P, M, G" />
+          </label>
+
+          <label>
+            <span>Descricao</span>
+            <textarea rows="5" formControlName="description"></textarea>
+            <small *ngIf="form.controls.description.touched && form.controls.description.invalid">
+              Informe uma descricao com ate 700 caracteres.
+            </small>
+          </label>
+
+          <button type="submit" [disabled]="isSaving">
+            {{ isSaving ? 'Cadastrando...' : 'Cadastrar produto' }}
+          </button>
+        </form>
+
+        <p class="admin-message" *ngIf="message">{{ message }}</p>
+      </article>
+
+      <section class="admin-card admin-card--list">
+        <div>
+          <span class="eyebrow">Catalogo</span>
+          <h2>{{ products().length }} produto(s) cadastrados</h2>
+        </div>
+
+        <article class="admin-product" *ngFor="let product of products(); trackBy: trackById">
+          <img [src]="product.image" [alt]="product.name" />
+
+          <div>
+            <span>{{ product.category }}</span>
+            <strong>{{ product.name }}</strong>
+            <small>{{ product.price | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</small>
+          </div>
+
+          <button type="button" (click)="removerProduto(product)" [disabled]="deletingId === product.id">
+            {{ deletingId === product.id ? 'Removendo...' : 'Excluir' }}
+          </button>
+        </article>
+      </section>
+    </div>
+  </ng-container>
+</section>
+
+<ng-template #forbiddenState>
+  <section class="admin-page admin-page--state">
+    <span class="eyebrow">Administracao</span>
+    <h1>Acesso restrito</h1>
+    <p>O usuario logado nao possui permissao de administrador.</p>
+    <a routerLink="/">Voltar para a loja</a>
+  </section>
+</ng-template>
+
+<ng-template #guestState>
+  <section class="admin-page admin-page--state">
+    <span class="eyebrow">Administracao</span>
+    <h1>Faca login como administrador</h1>
+    <p>Entre com uma conta admin para cadastrar e excluir produtos.</p>
+    <a routerLink="/login">Ir para login</a>
+  </section>
+</ng-template>

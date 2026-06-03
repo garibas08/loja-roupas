@@ -64,8 +64,11 @@
   align-items: center;
   padding: 1rem;
   border-radius: 26px;
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--rt-primary) 10%, var(--rt-surface)) 0%, var(--rt-surface) 100%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--rt-primary) 10%, var(--rt-surface)) 0%,
+    var(--rt-surface) 100%
+  );
   border: 1px solid color-mix(in srgb, var(--rt-border) 92%, white 8%);
 }
 

@@ -17,7 +17,11 @@
   color: var(--rt-primary);
   box-shadow: var(--rt-shadow-soft);
   cursor: pointer;
-  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, color 180ms ease;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
 }
 
 .detail-nav span {

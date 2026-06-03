@@ -2,14 +2,16 @@
   <div class="account-page__intro">
     <span class="eyebrow">Minha conta</span>
     <h1>{{ currentUser.name }}</h1>
-    <p>Seus dados de sessao agora ficam conectados ao backend Java e aos registros persistidos no MySQL.</p>
+    <p>Consulte seus dados, acompanhe pedidos recentes e mantenha seu cadastro atualizado.</p>
   </div>
 
   <div class="account-grid">
     <article class="account-card account-card--highlight">
       <span class="eyebrow">Sessao ativa</span>
       <h2>Conta pronta para comprar</h2>
-      <p>Voce pode seguir para o carrinho, continuar navegando pela vitrine ou sair quando quiser.</p>
+      <p>
+        Voce pode seguir para o carrinho, continuar navegando pela vitrine ou sair quando quiser.
+      </p>
 
       <div class="account-actions">
         <a routerLink="/">Continuar comprando</a>
@@ -24,17 +26,23 @@
       <form class="account-form" [formGroup]="profileForm" (ngSubmit)="saveProfile()">
         <label>
           <span>Nome</span>
-          <input type="text" formControlName="name">
-          <small *ngIf="profileForm.controls.name.touched && profileForm.controls.name.invalid">Informe ao menos 3 caracteres.</small>
+          <input type="text" formControlName="name" />
+          <small *ngIf="profileForm.controls.name.touched && profileForm.controls.name.invalid"
+            >Informe ao menos 3 caracteres.</small
+          >
         </label>
 
         <label>
           <span>Email</span>
-          <input type="email" formControlName="email">
-          <small *ngIf="profileForm.controls.email.touched && profileForm.controls.email.invalid">Informe um email valido.</small>
+          <input type="email" formControlName="email" />
+          <small *ngIf="profileForm.controls.email.touched && profileForm.controls.email.invalid"
+            >Informe um email valido.</small
+          >
         </label>
 
-        <button type="submit" [disabled]="isSavingProfile">{{ isSavingProfile ? 'Salvando...' : 'Salvar dados' }}</button>
+        <button type="submit" [disabled]="isSavingProfile">
+          {{ isSavingProfile ? 'Salvando...' : 'Salvar dados' }}
+        </button>
       </form>
 
       <p class="account-message" *ngIf="profileMessage">{{ profileMessage }}</p>
@@ -42,7 +50,15 @@
 
     <article class="account-card">
       <span class="eyebrow">Pedidos</span>
-      <h2>{{ ordersLoading() ? 'Carregando pedidos' : latestOrder() ? 'Ultimo pedido registrado' : 'Nenhum pedido ainda' }}</h2>
+      <h2>
+        {{
+          ordersLoading()
+            ? 'Carregando pedidos'
+            : latestOrder()
+              ? 'Ultimo pedido registrado'
+              : 'Nenhum pedido ainda'
+        }}
+      </h2>
 
       <div class="account-loading" *ngIf="ordersLoading(); else orderPreview">
         <span></span>
@@ -52,13 +68,16 @@
 
       <ng-template #orderPreview>
         <p *ngIf="latestOrder() as order; else noOrders">
-        Pedido {{ order.id }} criado em {{ order.createdAt | date: 'dd/MM/yyyy HH:mm' }} no valor de
-        {{ order.total | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}.
+          Pedido {{ order.id }} criado em {{ order.createdAt | date: 'dd/MM/yyyy HH:mm' }} no valor
+          de {{ order.total | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}.
         </p>
       </ng-template>
 
       <ng-template #noOrders>
-        <p>Quando voce finalizar uma compra, o resumo do pedido vai aparecer aqui junto com o historico salvo no backend.</p>
+        <p>
+          Quando voce finalizar uma compra, o resumo do pedido vai aparecer aqui junto com o
+          historico da sua conta.
+        </p>
       </ng-template>
 
       <button type="button" class="account-logout" (click)="logout()">Sair da conta</button>
@@ -78,7 +97,7 @@
       </div>
       <div>
         <span>{{ order.items.length }} item(ns)</span>
-        <strong>{{ order.total | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+        <strong>{{ order.total | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</strong>
       </div>
     </article>
   </section>
@@ -88,7 +107,7 @@
   <section class="account-page account-page--guest">
     <span class="eyebrow">Minha conta</span>
     <h1>Voce ainda nao esta logado</h1>
-    <p>Entre com sua conta para ver seus dados e pedidos sincronizados com o backend.</p>
+    <p>Entre com sua conta para ver seus dados e acompanhar seus pedidos.</p>
 
     <div class="account-actions">
       <a routerLink="/login">Fazer login</a>

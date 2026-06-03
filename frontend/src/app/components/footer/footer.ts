@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnDestroy, inject, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { StoreService } from '../../utils/store.service';
+import { LojaServico } from '../../utils/store.service';
 
-interface ContactFeedback {
+interface RetornoContato {
   type: string;
   name: string;
   email: string;
@@ -19,16 +19,16 @@ const DEFAULT_FEEDBACK_TYPE = 'avaliacao';
   selector: 'app-footer',
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './footer.html',
-  styleUrl: './footer.css'
+  styleUrl: './footer.css',
 })
-export class FooterComponent implements OnDestroy {
-  readonly user = inject(StoreService).loggedUser;
+export class RodapeComponent implements OnDestroy {
+  readonly user = inject(LojaServico).loggedUser;
   readonly isContactOpen = signal(false);
   readonly feedbackSaved = signal(false);
   readonly contactTopics = [
     { value: 'avaliacao', label: 'Avaliacao' },
     { value: 'recomendacao', label: 'Recomendacao' },
-    { value: 'reclamacao', label: 'Reclamacao' }
+    { value: 'reclamacao', label: 'Reclamacao' },
   ];
 
   feedbackType = DEFAULT_FEEDBACK_TYPE;
@@ -49,12 +49,12 @@ export class FooterComponent implements OnDestroy {
   }
 
   submitFeedback(form: NgForm): void {
-    const feedback: ContactFeedback = {
+    const feedback: RetornoContato = {
       type: this.feedbackType.trim(),
       name: this.feedbackName.trim(),
       email: this.feedbackEmail.trim(),
       message: this.feedbackMessage.trim(),
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
     if (!feedback.name || !feedback.email || !feedback.message) {
@@ -75,7 +75,7 @@ export class FooterComponent implements OnDestroy {
       feedbackType: DEFAULT_FEEDBACK_TYPE,
       feedbackName: '',
       feedbackEmail: '',
-      feedbackMessage: ''
+      feedbackMessage: '',
     });
   }
 
@@ -90,10 +90,10 @@ export class FooterComponent implements OnDestroy {
     this.setDocumentScrollLocked(false);
   }
 
-  private readFeedbacks(): ContactFeedback[] {
+  private readFeedbacks(): RetornoContato[] {
     try {
       const raw = localStorage.getItem(FEEDBACKS_KEY);
-      return raw ? (JSON.parse(raw) as ContactFeedback[]) : [];
+      return raw ? (JSON.parse(raw) as RetornoContato[]) : [];
     } catch {
       return [];
     }

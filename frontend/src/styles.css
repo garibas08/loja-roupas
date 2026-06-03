@@ -41,7 +41,9 @@ body {
     radial-gradient(circle at top right, rgba(24, 75, 70, 0.16), transparent 28%),
     radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.6), transparent 22%),
     linear-gradient(135deg, var(--rt-bg) 0%, #efe5d8 42%, #f9f5ef 100%);
-  transition: background 0.5s ease, color 0.5s ease;
+  transition:
+    background 0.5s ease,
+    color 0.5s ease;
 }
 
 a {
@@ -96,9 +98,18 @@ textarea {
   width: 38%;
 }
 
-.catalog-skeleton--title { height: 1.35rem; width: 78%; }
-.catalog-skeleton--price { height: 1.2rem; width: 46%; }
-.catalog-skeleton--actions { height: 2.8rem; width: 100%; }
+.catalog-skeleton--title {
+  height: 1.35rem;
+  width: 78%;
+}
+.catalog-skeleton--price {
+  height: 1.2rem;
+  width: 46%;
+}
+.catalog-skeleton--actions {
+  height: 2.8rem;
+  width: 100%;
+}
 
 body.tema-claro {
   --rt-primary: #184b46;

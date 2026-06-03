@@ -2,35 +2,36 @@ import { registerLocaleData } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import localePt from '@angular/common/locales/pt';
-import { StoreService } from '../../utils/store.service';
-import { CartPageComponent } from './cart-page';
+import { LojaServico } from '../../utils/store.service';
+import { PaginaCarrinhoComponent } from './cart-page';
 
 registerLocaleData(localePt, 'pt-BR');
 
-describe('CartPageComponent', () => {
+describe('PaginaCarrinhoComponent', () => {
   beforeEach(async () => {
     localStorage.clear();
 
     await TestBed.configureTestingModule({
-      imports: [CartPageComponent],
-      providers: [provideRouter([])]
+      imports: [PaginaCarrinhoComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 
-  it('should render cart item image, description and quantity without extra interaction', () => {
-    const store = TestBed.inject(StoreService);
+  it('exibe imagem, descrição e quantidade do item do carrinho sem interação extra', () => {
+    const store = TestBed.inject(LojaServico);
     store.cart.set([
       {
         id: 1,
         name: 'Camiseta Branca',
         price: 59.9,
         image: '/assets/produtos/camisa.jpg',
-        description: 'Camiseta branca basica de algodao com toque leve e corte reto para o dia a dia.',
-        quantity: 2
-      }
+        description:
+          'Camiseta branca basica de algodao com toque leve e corte reto para o dia a dia.',
+        quantity: 2,
+      },
     ]);
 
-    const fixture = TestBed.createComponent(CartPageComponent);
+    const fixture = TestBed.createComponent(PaginaCarrinhoComponent);
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;

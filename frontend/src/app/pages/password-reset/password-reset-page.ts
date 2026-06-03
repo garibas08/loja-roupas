@@ -2,17 +2,17 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { StoreService } from '../../utils/store.service';
+import { LojaServico } from '../../utils/store.service';
 
 @Component({
   selector: 'app-password-reset-page',
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './password-reset-page.html',
-  styleUrl: './password-reset-page.css'
+  styleUrl: './password-reset-page.css',
 })
-export class PasswordResetPageComponent {
+export class PaginaRedefinirSenhaComponent {
   private readonly fb = inject(FormBuilder);
-  private readonly store = inject(StoreService);
+  private readonly store = inject(LojaServico);
 
   requestMessage = '';
   resetMessage = '';
@@ -20,14 +20,14 @@ export class PasswordResetPageComponent {
   isResetting = false;
 
   readonly requestForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]]
+    email: ['', [Validators.required, Validators.email]],
   });
 
   readonly resetForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     code: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
     newPassword: ['', [Validators.required, Validators.minLength(6)]],
-    confirmPassword: ['', [Validators.required, Validators.minLength(6)]]
+    confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   async requestCode(): Promise<void> {
@@ -38,7 +38,7 @@ export class PasswordResetPageComponent {
 
     this.isRequesting = true;
     const email = this.requestForm.controls.email.value ?? '';
-    const result = await this.store.requestPasswordReset(email);
+    const result = await this.store.solicitarRedefinicaoSenha(email);
     this.isRequesting = false;
     this.requestMessage = result.message;
 

@@ -2,22 +2,25 @@ import { registerLocaleData } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import localePt from '@angular/common/locales/pt';
-import { HomePageComponent } from './home-page';
+import { LojaServico } from '../../utils/store.service';
+import { PaginaInicialComponent } from './home-page';
 
 registerLocaleData(localePt, 'pt-BR');
 
-describe('HomePageComponent', () => {
+describe('PaginaInicialComponent', () => {
   beforeEach(async () => {
     localStorage.clear();
 
     await TestBed.configureTestingModule({
-      imports: [HomePageComponent],
-      providers: [provideRouter([])]
+      imports: [PaginaInicialComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 
-  it('should render the showcase and product cards on first load', () => {
-    const fixture = TestBed.createComponent(HomePageComponent);
+  it('exibe o destaque e os cards de produto no primeiro carregamento', () => {
+    TestBed.inject(LojaServico).productsLoading.set(false);
+
+    const fixture = TestBed.createComponent(PaginaInicialComponent);
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
@@ -26,14 +29,16 @@ describe('HomePageComponent', () => {
     const showcaseImage = compiled.querySelector('.showcase__media img');
     const catalogDescriptions = compiled.querySelectorAll('.catalog-card__description');
 
-    expect(showcaseTitle?.textContent).toContain('Polo Feminina Breeze');
+    expect(showcaseTitle?.textContent).toContain('Polo Feminina Leve');
     expect(showcaseDescription?.textContent).toContain('Polo feminina');
     expect(showcaseImage?.getAttribute('src')).toContain('/assets/produtos/camisaUmfem.jpg');
     expect(catalogDescriptions.length).toBeGreaterThan(0);
   });
 
-  it('should filter the catalog by selected category', () => {
-    const fixture = TestBed.createComponent(HomePageComponent);
+  it('filtra o catálogo pela categoria selecionada', () => {
+    TestBed.inject(LojaServico).productsLoading.set(false);
+
+    const fixture = TestBed.createComponent(PaginaInicialComponent);
     const component = fixture.componentInstance;
     fixture.detectChanges();
 
@@ -41,8 +46,8 @@ describe('HomePageComponent', () => {
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    const categoryLabels = Array.from(compiled.querySelectorAll('.catalog-card__category')).map((element) =>
-      element.textContent?.trim()
+    const categoryLabels = Array.from(compiled.querySelectorAll('.catalog-card__category')).map(
+      (element) => element.textContent?.trim(),
     );
 
     expect(categoryLabels.length).toBe(4);

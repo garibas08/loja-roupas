@@ -3,35 +3,35 @@ import { Component, OnDestroy, computed, effect, inject, signal, untracked } fro
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
-import { Product } from '../../utils/models';
-import { StoreService } from '../../utils/store.service';
+import { Produto } from '../../utils/models';
+import { LojaServico } from '../../utils/store.service';
 
-type ProductNavigationDirection = 'prev' | 'next';
+type DirecaoNavegacaoProduto = 'prev' | 'next';
 
 @Component({
   selector: 'app-product-detail-page',
   imports: [CommonModule, CurrencyPipe, RouterLink],
   templateUrl: './product-detail-page.html',
-  styleUrl: './product-detail-page.css'
+  styleUrl: './product-detail-page.css',
 })
-export class ProductDetailPageComponent implements OnDestroy {
+export class PaginaDetalheProdutoComponent implements OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly store = inject(StoreService);
+  private readonly store = inject(LojaServico);
   private animationTimeout: number | null = null;
   private hasRendered = false;
-  private readonly pendingDirection = signal<ProductNavigationDirection>('next');
+  private readonly pendingDirection = signal<DirecaoNavegacaoProduto>('next');
 
   readonly productId = toSignal(
     this.route.paramMap.pipe(map((params) => Number(params.get('id')) || 0)),
-    { initialValue: Number(this.route.snapshot.paramMap.get('id')) || 0 }
+    { initialValue: Number(this.route.snapshot.paramMap.get('id')) || 0 },
   );
   readonly products = this.store.products;
   readonly productsLoading = this.store.productsLoading;
-  readonly product = computed(() => this.store.getProductById(this.productId()));
+  readonly product = computed(() => this.store.buscarProdutoPorId(this.productId()));
   readonly previousProduct = computed(() => this.getRelativeProduct(-1));
   readonly nextProduct = computed(() => this.getRelativeProduct(1));
-  readonly transitionDirection = signal<ProductNavigationDirection>('next');
+  readonly transitionDirection = signal<DirecaoNavegacaoProduto>('next');
   readonly isTransitioning = signal(false);
 
   constructor() {
@@ -62,27 +62,27 @@ export class ProductDetailPageComponent implements OnDestroy {
     });
   }
 
-  addToCart(): void {
+  adicionarAoCarrinho(): void {
     const currentProduct = this.product();
 
     if (currentProduct) {
-      this.store.addToCart(currentProduct.id);
+      this.store.adicionarAoCarrinho(currentProduct.id);
     }
   }
 
-  toggleWishlist(): void {
+  alternarFavorito(): void {
     const currentProduct = this.product();
 
     if (currentProduct) {
-      this.store.toggleWishlist(currentProduct.id);
+      this.store.alternarFavorito(currentProduct.id);
     }
   }
 
-  isWishlisted(productId: number): boolean {
-    return this.store.isWishlisted(productId);
+  estaNosFavoritos(productId: number): boolean {
+    return this.store.estaNosFavoritos(productId);
   }
 
-  goToSiblingProduct(direction: ProductNavigationDirection): void {
+  goToSiblingProduct(direction: DirecaoNavegacaoProduto): void {
     const targetProduct = direction === 'prev' ? this.previousProduct() : this.nextProduct();
 
     if (!targetProduct || targetProduct.id === this.productId()) {
@@ -99,7 +99,7 @@ export class ProductDetailPageComponent implements OnDestroy {
     }
   }
 
-  private getRelativeProduct(offset: number): Product | null {
+  private getRelativeProduct(offset: number): Produto | null {
     const products = this.products();
 
     if (products.length < 2) {

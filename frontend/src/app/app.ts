@@ -1,35 +1,35 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { FooterComponent } from './components/footer/footer';
-import { HeaderComponent } from './components/header/header';
-import { StoreService } from './utils/store.service';
-import { ThemeService } from './utils/theme.service';
+import { RodapeComponent } from './components/footer/footer';
+import { CabecalhoComponent } from './components/header/header';
+import { LojaServico } from './utils/store.service';
+import { TemaServico } from './utils/theme.service';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent],
+  imports: [CommonModule, RouterOutlet, CabecalhoComponent, RodapeComponent],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
-export class App implements OnInit {
+export class Aplicativo implements OnInit {
   private readonly router = inject(Router);
-  readonly store = inject(StoreService);
-  private readonly themeService = inject(ThemeService);
+  readonly store = inject(LojaServico);
+  private readonly themeService = inject(TemaServico);
 
   ngOnInit(): void {
-    this.store.loadProducts();
-    this.store.loadCart();
-    void this.store.initializeSession();
-    this.themeService.aplicarTemaSalvo();
+    this.store.carregarProdutos();
+    this.store.carregarCarrinho();
+    void this.store.iniciarSessao();
+    this.themeService.applySavedTheme();
   }
 
   closePopup(): void {
-    this.store.closeCartPopup();
+    this.store.fecharAvisoCarrinho();
   }
 
   goToCart(): void {
-    this.store.closeCartPopup();
+    this.store.fecharAvisoCarrinho();
     this.router.navigateByUrl('/carrinho');
   }
 }

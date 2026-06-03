@@ -16,7 +16,11 @@
       class="detail-nav detail-nav--prev"
       (click)="goToSiblingProduct('prev')"
       [disabled]="!previousProduct()"
-      [attr.aria-label]="previousProduct() ? 'Ver produto anterior: ' + previousProduct()!.name : 'Sem produto anterior'"
+      [attr.aria-label]="
+        previousProduct()
+          ? 'Ver produto anterior: ' + previousProduct()!.name
+          : 'Sem produto anterior'
+      "
       [attr.title]="previousProduct() ? 'Anterior: ' + previousProduct()!.name : null"
     >
       <span aria-hidden="true">&lt;</span>
@@ -27,12 +31,12 @@
       [class.detail--slide-next]="isTransitioning() && transitionDirection() === 'next'"
       [class.detail--slide-prev]="isTransitioning() && transitionDirection() === 'prev'"
     >
-      <img [src]="item.image" [alt]="item.name" class="detail__image">
+      <img [src]="item.image" [alt]="item.name" class="detail__image" />
 
       <div class="detail__content">
         <span class="eyebrow">{{ item.category }}</span>
         <h1>{{ item.name }}</h1>
-        <strong>{{ item.price | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+        <strong>{{ item.price | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</strong>
         <p>{{ item.description }}</p>
 
         <div class="detail__sizes">
@@ -43,14 +47,14 @@
         </div>
 
         <div class="detail__actions">
-          <button type="button" (click)="addToCart()">Adicionar ao carrinho</button>
+          <button type="button" (click)="adicionarAoCarrinho()">Adicionar ao carrinho</button>
           <button
             type="button"
             class="detail__favorite"
-            [class.is-favorite]="isWishlisted(item.id)"
-            (click)="toggleWishlist()"
+            [class.is-favorite]="estaNosFavoritos(item.id)"
+            (click)="alternarFavorito()"
           >
-            {{ isWishlisted(item.id) ? 'Remover favorito' : 'Favoritar' }}
+            {{ estaNosFavoritos(item.id) ? 'Remover favorito' : 'Favoritar' }}
           </button>
           <a routerLink="/">Voltar</a>
           <a routerLink="/carrinho">Ir para o carrinho</a>
@@ -63,7 +67,9 @@
       class="detail-nav detail-nav--next"
       (click)="goToSiblingProduct('next')"
       [disabled]="!nextProduct()"
-      [attr.aria-label]="nextProduct() ? 'Ver proximo produto: ' + nextProduct()!.name : 'Sem proximo produto'"
+      [attr.aria-label]="
+        nextProduct() ? 'Ver proximo produto: ' + nextProduct()!.name : 'Sem proximo produto'
+      "
       [attr.title]="nextProduct() ? 'Proximo: ' + nextProduct()!.name : null"
     >
       <span aria-hidden="true">&gt;</span>

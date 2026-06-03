@@ -1,6 +1,6 @@
-export type ProductCategory = 'Masculino' | 'Feminino' | 'Acessorios' | 'Infantil';
-export type ProductCategoryFilter = ProductCategory | 'Todos';
-export type BrazilianState =
+export type CategoriaProduto = 'Masculino' | 'Feminino' | 'Acessorios' | 'Infantil';
+export type FiltroCategoriaProduto = CategoriaProduto | 'Todos';
+export type EstadoBrasileiro =
   | 'AC'
   | 'AL'
   | 'AP'
@@ -29,17 +29,26 @@ export type BrazilianState =
   | 'SE'
   | 'TO';
 
-export interface Product {
+export interface Produto {
   id: number;
   name: string;
   price: number;
   image: string;
-  category: ProductCategory;
+  category: CategoriaProduto;
   description: string;
   sizes: string[];
 }
 
-export interface CartItem {
+export interface DadosProduto {
+  name: string;
+  price: number;
+  image: string;
+  category: CategoriaProduto;
+  description: string;
+  sizes: string[];
+}
+
+export interface ItemCarrinho {
   id: number;
   name: string;
   price: number;
@@ -48,69 +57,66 @@ export interface CartItem {
   quantity: number;
 }
 
-export interface StoredCartItem {
-  id: number;
-  nome: string;
-  preco: number;
-  imagem: string;
-  descricao: string;
-  quantidade: number;
-}
-
-export interface RegisteredUser {
+export interface UsuarioCadastro {
   name: string;
   email: string;
   password: string;
 }
 
-export interface LoggedUser {
+export interface UsuarioLogado {
   id: number;
   name: string;
   email: string;
+  role: 'USER' | 'ADMIN';
 }
 
-export interface AuthSession {
+export interface SessaoAutenticacao {
   token: string;
-  user: LoggedUser;
+  user: UsuarioLogado;
 }
 
-export interface AuthResponse extends AuthSession {
+export interface RespostaAutenticacao extends SessaoAutenticacao {
   message: string;
 }
 
-export interface MessageResponse {
+export interface RespostaMensagem {
   message: string;
 }
 
-export interface ProfileUpdatePayload {
+export interface ResultadoOperacao {
+  success: boolean;
+  message: string;
+}
+
+export interface DadosAtualizacaoPerfil {
   name: string;
   email: string;
 }
 
-export type PaymentMethod = 'Cartao' | 'Pix' | 'Boleto';
+export type FormaPagamento = 'Cartao' | 'Pix' | 'Boleto';
 
-export interface CheckoutData {
+export interface DadosCheckout {
   name: string;
   address: string;
   number: string;
   city: string;
-  state: BrazilianState;
+  state: EstadoBrasileiro;
   cep: string;
-  paymentMethod: PaymentMethod;
+  paymentMethod: FormaPagamento;
   cardNumber?: string;
 }
 
-export interface OrderSummary {
+export interface ResumoPedido {
   id: string;
-  items: CartItem[];
+  items: ItemCarrinho[];
   subtotal: number;
   shippingFee: number;
   total: number;
   createdAt: string;
-  customer: CheckoutData;
+  customer: DadosCheckout;
 }
 
-export interface CreateOrderPayload extends CheckoutData {
+export interface DadosCriacaoPedido extends DadosCheckout {
   items: Array<{
     productId: number;
     quantity: number;

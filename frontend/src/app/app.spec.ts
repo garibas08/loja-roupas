@@ -1,24 +1,24 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { App } from './app';
+import { Aplicativo } from './app';
 import { routes } from './app.routes';
 
-describe('App', () => {
+describe('Aplicativo', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [App],
-      providers: [provideRouter(routes)]
+      imports: [Aplicativo],
+      providers: [provideRouter(routes)],
     }).compileComponents();
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(App);
+  it('cria a aplicação', () => {
+    const fixture = TestBed.createComponent(Aplicativo);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
 
-  it('should render the updated brand', async () => {
-    const fixture = TestBed.createComponent(App);
+  it('exibe a marca atualizada', async () => {
+    const fixture = TestBed.createComponent(Aplicativo);
     fixture.detectChanges();
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;

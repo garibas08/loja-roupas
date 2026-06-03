@@ -24,7 +24,11 @@
   background:
     radial-gradient(circle at top left, rgba(214, 155, 97, 0.2), transparent 34%),
     radial-gradient(circle at bottom right, rgba(18, 77, 72, 0.22), transparent 36%),
-    linear-gradient(135deg, color-mix(in srgb, var(--rt-primary) 16%, var(--rt-surface)) 0%, var(--rt-surface) 78%);
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--rt-primary) 16%, var(--rt-surface)) 0%,
+      var(--rt-surface) 78%
+    );
 }
 
 .showcase__intro h1,
@@ -144,7 +148,11 @@
   color: var(--rt-primary);
   font: inherit;
   cursor: pointer;
-  transition: background 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .showcase__chip:hover {
@@ -185,8 +193,7 @@
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
   align-items: stretch;
   overflow: hidden;
-  background:
-    linear-gradient(160deg, rgba(11, 25, 26, 0.96) 0%, rgba(15, 62, 57, 0.92) 100%);
+  background: linear-gradient(160deg, rgba(11, 25, 26, 0.96) 0%, rgba(15, 62, 57, 0.92) 100%);
   color: #f6faf8;
 }
 
@@ -285,7 +292,9 @@
   height: 12px;
   border-radius: 999px;
   background: color-mix(in srgb, var(--rt-border) 80%, var(--rt-text) 20%);
-  transition: transform 180ms ease, background 180ms ease;
+  transition:
+    transform 180ms ease,
+    background 180ms ease;
 }
 
 .showcase__dots button.is-active {
@@ -395,7 +404,10 @@
 
 .catalog-card__content {
   display: grid;
-  grid-template-rows: max-content max-content minmax(3.2rem, auto) max-content max-content max-content;
+  grid-template-rows: max-content max-content minmax(
+      3.2rem,
+      auto
+    ) max-content max-content max-content;
   align-content: start;
   gap: 0.9rem;
   padding: 1.35rem;
@@ -474,19 +486,25 @@
   }
 
   .showcase__carousel {
-    grid-template-rows: var(--rt-banner-height-mobile) auto;
+    grid-template-rows: auto auto;
   }
 
   .showcase__window {
-    height: var(--rt-banner-height-mobile);
+    height: auto;
   }
 
   .showcase__media {
-    min-height: var(--rt-banner-height-mobile);
+    height: var(--rt-banner-height-mobile);
+    min-height: 0;
+  }
+
+  .showcase__track {
+    height: auto;
   }
 
   .showcase__content {
     min-height: auto;
+    overflow: visible;
   }
 }
 

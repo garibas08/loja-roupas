@@ -2,12 +2,11 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm",
-    "analytics": "2256ca06-4bfc-48ba-84db-6bda310bf649"
+    "packageManager": "npm"
   },
   "newProjectRoot": "projects",
   "projects": {
-    "web02": {
+    "loja-roupas": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -25,9 +24,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ]
+            "styles": ["src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -37,11 +34,11 @@
                   "maximumWarning": "500kB",
                   "maximumError": "1MB"
                 },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "7kB",
-                  "maximumError": "10kB"
-                }
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "12kB",
+              "maximumError": "16kB"
+            }
               ],
               "outputHashing": "all"
             },
@@ -57,10 +54,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "web02:build:production"
+              "buildTarget": "loja-roupas:build:production"
             },
             "development": {
-              "buildTarget": "web02:build:development"
+              "buildTarget": "loja-roupas:build:development"
             }
           },
           "defaultConfiguration": "development"

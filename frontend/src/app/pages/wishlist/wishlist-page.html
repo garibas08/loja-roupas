@@ -15,18 +15,20 @@
   <section class="wishlist-grid" *ngIf="!productsLoading() && items().length; else wishlistState">
     <article class="wishlist-card" *ngFor="let product of items(); trackBy: trackById">
       <button class="wishlist-card__image-button" type="button" (click)="goToProduct(product.id)">
-        <img [src]="product.image" [alt]="product.name">
+        <img [src]="product.image" [alt]="product.name" />
       </button>
 
       <div class="wishlist-card__content">
         <span>{{ product.category }}</span>
         <h2>{{ product.name }}</h2>
         <p>{{ product.description }}</p>
-        <strong>{{ product.price | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+        <strong>{{ product.price | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</strong>
 
         <div class="wishlist-card__actions">
-          <button type="button" (click)="addToCart(product.id)">Adicionar ao carrinho</button>
-          <button type="button" class="wishlist-card__secondary" (click)="remove(product.id)">Remover</button>
+          <button type="button" (click)="adicionarAoCarrinho(product.id)">Adicionar ao carrinho</button>
+          <button type="button" class="wishlist-card__secondary" (click)="remove(product.id)">
+            Remover
+          </button>
         </div>
       </div>
     </article>

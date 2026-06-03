@@ -5,7 +5,10 @@
   backdrop-filter: blur(18px);
   background: color-mix(in srgb, var(--rt-surface-strong) 90%, transparent);
   border-bottom: 1px solid var(--rt-border);
-  transition: background 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+  transition:
+    background 0.5s ease,
+    color 0.5s ease,
+    border-color 0.5s ease;
 }
 
 .header__inner {
@@ -85,7 +88,10 @@
   cursor: pointer;
   padding: 0.7rem 1rem;
   border-radius: 999px;
-  transition: background 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+  transition:
+    background 0.5s ease,
+    color 0.5s ease,
+    border-color 0.5s ease;
 }
 
 .nav a:hover,
@@ -138,7 +144,9 @@
 .cart-link {
   background: var(--rt-primary);
   color: white !important;
-  transition: background 0.5s ease, color 0.5s ease;
+  transition:
+    background 0.5s ease,
+    color 0.5s ease;
 }
 
 .wishlist-link {
@@ -192,6 +200,16 @@
 
 .header__status strong {
   color: var(--rt-text);
+}
+
+.header__badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  background: color-mix(in srgb, var(--rt-accent) 18%, transparent);
+  color: var(--rt-accent);
+  font-weight: 800;
 }
 
 @media (max-width: 960px) {

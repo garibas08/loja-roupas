@@ -10,32 +10,34 @@ import {
   computed,
   effect,
   inject,
-  signal
+  signal,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Product, ProductCategory } from '../../utils/models';
-import { PRODUCT_CATEGORIES } from '../../utils/products';
-import { StoreService } from '../../utils/store.service';
+import { Produto, CategoriaProduto } from '../../utils/models';
+import { CATEGORIAS_PRODUTO } from '../../utils/products';
+import { LojaServico } from '../../utils/store.service';
 
 const FEATURED_PRODUCT_IDS = [7, 6, 10, 11];
 const FEATURED_IMAGE_STYLES: Record<number, { scale: number; position: string }> = {
   6: { scale: 1.22, position: 'center 8%' },
   7: { scale: 1.46, position: 'center 12%' },
   10: { scale: 1.14, position: 'center 12%' },
-  11: { scale: 1.1, position: 'center 10%' }
+  11: { scale: 1.1, position: 'center 10%' },
 };
 
 @Component({
   selector: 'app-home-page',
   imports: [CommonModule, CurrencyPipe, RouterLink],
   templateUrl: './home-page.html',
-  styleUrl: './home-page.css'
+  styleUrl: './home-page.css',
 })
-export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChildren('productCard', { read: ElementRef }) private readonly productCards!: QueryList<ElementRef<HTMLElement>>;
+export class PaginaInicialComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChildren('productCard', { read: ElementRef }) private readonly productCards!: QueryList<
+    ElementRef<HTMLElement>
+  >;
 
-  private readonly store = inject(StoreService);
+  private readonly store = inject(LojaServico);
   private readonly router = inject(Router);
   private carouselTimer: number | null = null;
   private productRevealObserver: IntersectionObserver | null = null;
@@ -43,15 +45,15 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
   private revealLayoutFrame: number | null = null;
   private readonly handleViewportChange = () => this.scheduleProductRevealRefresh();
 
-  readonly categories = PRODUCT_CATEGORIES;
+  readonly categories = CATEGORIAS_PRODUTO;
   readonly products = this.store.filteredProducts;
   readonly productsLoading = this.store.productsLoading;
   readonly cartCount = this.store.cartCount;
   readonly activeCategory = this.store.activeCategory;
   readonly featuredProducts = computed(() =>
-    FEATURED_PRODUCT_IDS
-      .map((id) => this.store.products().find((product) => product.id === id))
-      .filter((product): product is Product => product !== undefined)
+    FEATURED_PRODUCT_IDS.map((id) =>
+      this.store.products().find((product) => product.id === id),
+    ).filter((product): product is Produto => product !== undefined),
   );
   readonly activeSlideIndex = signal(0);
   readonly activeProduct = computed(() => {
@@ -60,7 +62,8 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
   });
   readonly productCountLabel = computed(() => {
     const selectedCategory = this.activeCategory();
-    const categoryLabel = selectedCategory === 'Todos' ? 'todo o catalogo' : selectedCategory.toLowerCase();
+    const categoryLabel =
+      selectedCategory === 'Todos' ? 'todo o catalogo' : selectedCategory.toLowerCase();
 
     return `${this.products().length} produto(s) em ${categoryLabel} | ${this.cartCount()} no carrinho`;
   });
@@ -89,7 +92,9 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.setupProductReveal();
-    this.productCardChangesSubscription = this.productCards.changes.subscribe(() => this.scheduleProductRevealRefresh());
+    this.productCardChangesSubscription = this.productCards.changes.subscribe(() =>
+      this.scheduleProductRevealRefresh(),
+    );
 
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', this.handleViewportChange, { passive: true });
@@ -135,19 +140,19 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.activeSlideIndex.set(index);
   }
 
-  addToCart(productId: number): void {
-    this.store.addToCart(productId);
+  adicionarAoCarrinho(productId: number): void {
+    this.store.adicionarAoCarrinho(productId);
   }
 
-  toggleWishlist(productId: number): void {
-    this.store.toggleWishlist(productId);
+  alternarFavorito(productId: number): void {
+    this.store.alternarFavorito(productId);
   }
 
-  isWishlisted(productId: number): boolean {
-    return this.store.isWishlisted(productId);
+  estaNosFavoritos(productId: number): boolean {
+    return this.store.estaNosFavoritos(productId);
   }
 
-  toggleCategory(category: ProductCategory): void {
+  toggleCategory(category: CategoriaProduto): void {
     this.store.setActiveCategory(this.activeCategory() === category ? 'Todos' : category);
   }
 
@@ -159,11 +164,11 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigateByUrl(`/produto/${productId}`);
   }
 
-  trackById(_: number, product: Product): number {
+  trackById(_: number, product: Produto): number {
     return product.id;
   }
 
-  trackByCategory(_: number, category: ProductCategory): ProductCategory {
+  trackByCategory(_: number, category: CategoriaProduto): CategoriaProduto {
     return category;
   }
 
@@ -202,8 +207,8 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       {
         threshold: [0, 0.18, 0.32],
-        rootMargin: '0px 0px -8% 0px'
-      }
+        rootMargin: '0px 0px -8% 0px',
+      },
     );
 
     this.scheduleProductRevealRefresh();
@@ -249,7 +254,9 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  private revealAllProductCards(cards: ElementRef<HTMLElement>[] = this.productCards?.toArray() ?? []): void {
+  private revealAllProductCards(
+    cards: ElementRef<HTMLElement>[] = this.productCards?.toArray() ?? [],
+  ): void {
     this.applyRevealDirections(cards);
 
     cards.forEach((card) => {

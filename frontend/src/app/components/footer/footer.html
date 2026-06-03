@@ -4,8 +4,8 @@
       <span class="eyebrow">Atendimento</span>
       <h2>Estamos por aqui para ouvir voce</h2>
       <p>
-        Compartilhe sua avaliacao, envie uma recomendacao ou conte o que podemos melhorar para deixar a sua
-        experiencia de compra ainda melhor.
+        Compartilhe sua avaliacao, envie uma recomendacao ou conte o que podemos melhorar para
+        deixar a sua experiencia de compra ainda melhor.
       </p>
     </div>
 
@@ -14,16 +14,20 @@
         <a routerLink="/">Vitrine</a>
         <a routerLink="/carrinho">Carrinho</a>
         <a routerLink="/checkout">Checkout</a>
-        <a [routerLink]="user() ? '/minha-conta' : '/login'">{{ user() ? 'Minha conta' : 'Login' }}</a>
+        <a [routerLink]="user() ? '/minha-conta' : '/login'">{{
+          user() ? 'Minha conta' : 'Login'
+        }}</a>
       </div>
 
-      <button type="button" class="footer__contact-button" (click)="openContact()">Contate-nos</button>
+      <button type="button" class="footer__contact-button" (click)="openContact()">
+        Contate-nos
+      </button>
     </div>
   </div>
 
   <div class="footer__developer">
     <span>desenvolvido por: Gabriel Garibaldi & Samuel Felipe de Souza</span>
-    <br><span>linkedin:</span>
+    <br /><span>linkedin:</span>
     <a
       href="https://www.linkedin.com/in/gabriel-garibaldi-de-cataldi-759662274/"
       target="_blank"
@@ -31,10 +35,16 @@
     >
       Gabriel Garibaldi - Linkedin
     </a>
-    <a href="https://www.linkedin.com/in/samuelfsouza/" target="_blank" rel="noreferrer"> Samuel Souza - Linkedin</a><br>
+    <a href="https://www.linkedin.com/in/samuelfsouza/" target="_blank" rel="noreferrer">
+      Samuel Souza - Linkedin</a
+    ><br />
     <span>github:</span>
-    <a href="https://github.com/garibas08" target="_blank" rel="noreferrer">Gabriel Garibaldi - Github</a>
-    <a href="https://github.com/Souzz4F?tab=repositories" target="_blank" rel="noreferrer"> Samuel Souza - Github</a>
+    <a href="https://github.com/garibas08" target="_blank" rel="noreferrer"
+      >Gabriel Garibaldi - Github</a
+    >
+    <a href="https://github.com/Souzz4F?tab=repositories" target="_blank" rel="noreferrer">
+      Samuel Souza - Github</a
+    >
   </div>
 </footer>
 
@@ -52,7 +62,12 @@
         <h3 id="contactModalTitle">Envie sua opiniao para a Garibas Store</h3>
       </div>
 
-      <button type="button" class="contact-modal__close" aria-label="Fechar janela de contato" (click)="closeContact()">
+      <button
+        type="button"
+        class="contact-modal__close"
+        aria-label="Fechar janela de contato"
+        (click)="closeContact()"
+      >
         x
       </button>
     </div>
@@ -61,22 +76,40 @@
       Escreva uma avaliacao, recomendacao ou reclamacao. Seu retorno ajuda a loja a melhorar.
     </p>
 
-    <form #contactForm="ngForm" class="contact-modal__form" (ngSubmit)="submitFeedback(contactForm)">
+    <form
+      #contactForm="ngForm"
+      class="contact-modal__form"
+      (ngSubmit)="submitFeedback(contactForm)"
+    >
       <label class="contact-modal__field">
         <span>Tipo de mensagem</span>
         <select name="feedbackType" [(ngModel)]="feedbackType">
-          <option *ngFor="let topic of contactTopics" [value]="topic.value">{{ topic.label }}</option>
+          <option *ngFor="let topic of contactTopics" [value]="topic.value">
+            {{ topic.label }}
+          </option>
         </select>
       </label>
 
       <label class="contact-modal__field">
         <span>Nome</span>
-        <input type="text" name="feedbackName" [(ngModel)]="feedbackName" required placeholder="Seu nome">
+        <input
+          type="text"
+          name="feedbackName"
+          [(ngModel)]="feedbackName"
+          required
+          placeholder="Seu nome"
+        />
       </label>
 
       <label class="contact-modal__field">
         <span>E-mail</span>
-        <input type="email" name="feedbackEmail" [(ngModel)]="feedbackEmail" required placeholder="voce@email.com">
+        <input
+          type="email"
+          name="feedbackEmail"
+          [(ngModel)]="feedbackEmail"
+          required
+          placeholder="voce@email.com"
+        />
       </label>
 
       <label class="contact-modal__field">
@@ -90,10 +123,14 @@
         ></textarea>
       </label>
 
-      <p class="contact-modal__success" *ngIf="feedbackSaved()">Mensagem registrada com sucesso. Obrigado pelo contato.</p>
+      <p class="contact-modal__success" *ngIf="feedbackSaved()">
+        Mensagem registrada com sucesso. Obrigado pelo contato.
+      </p>
 
       <div class="contact-modal__actions">
-        <button type="button" class="contact-modal__secondary" (click)="closeContact()">Cancelar</button>
+        <button type="button" class="contact-modal__secondary" (click)="closeContact()">
+          Cancelar
+        </button>
         <button type="submit" class="contact-modal__primary">Enviar mensagem</button>
       </div>
     </form>

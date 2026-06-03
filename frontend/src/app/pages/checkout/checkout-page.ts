@@ -3,10 +3,10 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { formatCardNumber, formatCep } from '../../utils/masks';
-import { BrazilianState, PaymentMethod } from '../../utils/models';
-import { StoreService } from '../../utils/store.service';
+import { EstadoBrasileiro, FormaPagamento } from '../../utils/models';
+import { LojaServico } from '../../utils/store.service';
 
-const BRAZILIAN_STATES: Array<{ value: BrazilianState; label: string }> = [
+const BRAZILIAN_STATES: Array<{ value: EstadoBrasileiro; label: string }> = [
   { value: 'SP', label: 'SP - Sao Paulo' },
   { value: 'RJ', label: 'RJ - Rio de Janeiro' },
   { value: 'MG', label: 'MG - Minas Gerais' },
@@ -33,24 +33,33 @@ const BRAZILIAN_STATES: Array<{ value: BrazilianState; label: string }> = [
   { value: 'PA', label: 'PA - Para' },
   { value: 'RO', label: 'RO - Rondonia' },
   { value: 'RR', label: 'RR - Roraima' },
-  { value: 'TO', label: 'TO - Tocantins' }
+  { value: 'TO', label: 'TO - Tocantins' },
+];
+
+const SHIPPING_FEE_GROUPS: Array<{ states: EstadoBrasileiro[]; fee: number }> = [
+  { states: ['SP'], fee: 12.9 },
+  { states: ['RJ', 'MG', 'ES'], fee: 18.9 },
+  { states: ['PR', 'SC', 'RS'], fee: 24.9 },
+  { states: ['DF', 'GO', 'MT', 'MS'], fee: 29.9 },
+  { states: ['BA', 'SE', 'AL', 'PE', 'PB', 'RN', 'CE', 'PI', 'MA'], fee: 34.9 },
+  { states: ['AC', 'AP', 'AM', 'PA', 'RO', 'RR', 'TO'], fee: 39.9 },
 ];
 
 @Component({
   selector: 'app-checkout-page',
   imports: [CommonModule, ReactiveFormsModule, CurrencyPipe],
   templateUrl: './checkout-page.html',
-  styleUrl: './checkout-page.css'
+  styleUrl: './checkout-page.css',
 })
-export class CheckoutPageComponent {
+export class PaginaCheckoutComponent {
   private readonly fb = inject(FormBuilder);
-  private readonly store = inject(StoreService);
+  private readonly store = inject(LojaServico);
   private readonly router = inject(Router);
 
   readonly items = this.store.cart;
   readonly total = this.store.cartTotal;
   readonly states = BRAZILIAN_STATES;
-  readonly selectedState = signal<BrazilianState>('SP');
+  readonly selectedState = signal<EstadoBrasileiro>('SP');
   readonly shippingFee = computed(() => this.calculateShippingFee(this.selectedState()));
   readonly finalTotal = computed(() => this.total() + this.shippingFee());
   message = '';
@@ -64,7 +73,7 @@ export class CheckoutPageComponent {
     state: ['SP', [Validators.required]],
     cep: ['', [Validators.required, Validators.minLength(9)]],
     paymentMethod: ['Cartao', [Validators.required]],
-    cardNumber: ['']
+    cardNumber: [''],
   });
 
   constructor() {
@@ -78,16 +87,22 @@ export class CheckoutPageComponent {
   }
 
   onCardInput(event: Event): void {
-    this.form.controls.cardNumber.setValue(formatCardNumber((event.target as HTMLInputElement).value));
+    this.form.controls.cardNumber.setValue(
+      formatCardNumber((event.target as HTMLInputElement).value),
+    );
   }
 
   onStateChange(event: Event): void {
-    this.selectedState.set((event.target as HTMLSelectElement).value as BrazilianState);
+    this.selectedState.set((event.target as HTMLSelectElement).value as EstadoBrasileiro);
   }
 
   async submit(): Promise<void> {
-    const paymentMethod = (this.form.controls.paymentMethod.value ?? 'Cartao') as PaymentMethod;
-    const state = (this.form.controls.state.value ?? 'SP') as BrazilianState;
+    if (this.isSubmitting) {
+      return;
+    }
+
+    const paymentMethod = (this.form.controls.paymentMethod.value ?? 'Cartao') as FormaPagamento;
+    const state = (this.form.controls.state.value ?? 'SP') as EstadoBrasileiro;
 
     if (paymentMethod === 'Cartao') {
       this.form.controls.cardNumber.addValidators([Validators.required, Validators.minLength(19)]);
@@ -103,7 +118,7 @@ export class CheckoutPageComponent {
     }
 
     this.isSubmitting = true;
-    const result = await this.store.createOrder({
+    const result = await this.store.criarPedido({
       name: this.form.value.name ?? '',
       address: this.form.value.address ?? '',
       number: this.form.value.number ?? '',
@@ -111,7 +126,7 @@ export class CheckoutPageComponent {
       state,
       cep: this.form.value.cep ?? '',
       paymentMethod,
-      cardNumber: this.form.value.cardNumber ?? ''
+      cardNumber: this.form.value.cardNumber ?? '',
     });
     this.isSubmitting = false;
     this.message = result.message;
@@ -121,27 +136,7 @@ export class CheckoutPageComponent {
     }
   }
 
-  private calculateShippingFee(state: BrazilianState): number {
-    if (state === 'SP') {
-      return 12.9;
-    }
-
-    if (['RJ', 'MG', 'ES'].includes(state)) {
-      return 18.9;
-    }
-
-    if (['PR', 'SC', 'RS'].includes(state)) {
-      return 24.9;
-    }
-
-    if (['DF', 'GO', 'MT', 'MS'].includes(state)) {
-      return 29.9;
-    }
-
-    if (['BA', 'SE', 'AL', 'PE', 'PB', 'RN', 'CE', 'PI', 'MA'].includes(state)) {
-      return 34.9;
-    }
-
-    return 39.9;
+  private calculateShippingFee(state: EstadoBrasileiro): number {
+    return SHIPPING_FEE_GROUPS.find((group) => group.states.includes(state))?.fee ?? 39.9;
   }
 }

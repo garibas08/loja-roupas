@@ -2,31 +2,39 @@
   <div>
     <span class="eyebrow">Cadastro</span>
     <h1>Crie sua conta</h1>
-    <p>Seu cadastro passa a ser salvo no backend Java com persistencia em banco MySQL.</p>
+    <p>
+      Cadastre-se para acompanhar pedidos, editar seus dados e finalizar compras com mais agilidade.
+    </p>
   </div>
 
   <form [formGroup]="form" (ngSubmit)="submit()">
     <label>
       <span>Nome</span>
-      <input type="text" formControlName="name" placeholder="Seu nome completo">
-      <small *ngIf="form.controls.name.touched && form.controls.name.invalid">Informe seu nome.</small>
+      <input type="text" formControlName="name" placeholder="Seu nome completo" />
+      <small *ngIf="form.controls.name.touched && form.controls.name.invalid"
+        >Informe seu nome.</small
+      >
     </label>
 
     <label>
       <span>Email</span>
-      <input type="email" formControlName="email" placeholder="voce@exemplo.com">
-      <small *ngIf="form.controls.email.touched && form.controls.email.invalid">Informe um email valido.</small>
+      <input type="email" formControlName="email" placeholder="voce@exemplo.com" />
+      <small *ngIf="form.controls.email.touched && form.controls.email.invalid"
+        >Informe um email valido.</small
+      >
     </label>
 
     <label>
       <span>Senha</span>
-      <input type="password" formControlName="password" placeholder="Minimo de 6 caracteres">
+      <input type="password" formControlName="password" placeholder="Minimo de 6 caracteres" />
       <small *ngIf="form.controls.password.touched && form.controls.password.invalid">
         A senha precisa ter ao menos 6 caracteres.
       </small>
     </label>
 
-    <button type="submit" [disabled]="isSubmitting">{{ isSubmitting ? 'Cadastrando...' : 'Cadastrar' }}</button>
+    <button type="submit" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Cadastrando...' : 'Cadastrar' }}
+    </button>
   </form>
 
   <p class="message" *ngIf="message">{{ message }}</p>
@@ -38,7 +46,7 @@
     <div>
       <span class="eyebrow">Conta ativa</span>
       <h1>Seu cadastro ja foi realizado</h1>
-      <p>Voce pode revisar os dados da conta sincronizados com o backend na area Minha conta ou voltar para a vitrine.</p>
+      <p>Voce pode revisar seus dados na area Minha conta ou voltar para a vitrine.</p>
     </div>
 
     <div class="auth-actions">

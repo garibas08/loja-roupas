@@ -2,17 +2,17 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { StoreService } from '../../utils/store.service';
+import { LojaServico } from '../../utils/store.service';
 
 @Component({
   selector: 'app-register-page',
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './register-page.html',
-  styleUrl: './register-page.css'
+  styleUrl: './register-page.css',
 })
-export class RegisterPageComponent {
+export class PaginaCadastroComponent {
   private readonly fb = inject(FormBuilder);
-  private readonly store = inject(StoreService);
+  private readonly store = inject(LojaServico);
   private readonly router = inject(Router);
 
   readonly user = this.store.loggedUser;
@@ -22,7 +22,7 @@ export class RegisterPageComponent {
   readonly form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
+    password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   async submit(): Promise<void> {
@@ -32,10 +32,10 @@ export class RegisterPageComponent {
     }
 
     this.isSubmitting = true;
-    const result = await this.store.registerUser({
+    const result = await this.store.cadastrarUsuario({
       name: this.form.value.name ?? '',
       email: this.form.value.email ?? '',
-      password: this.form.value.password ?? ''
+      password: this.form.value.password ?? '',
     });
     this.isSubmitting = false;
 

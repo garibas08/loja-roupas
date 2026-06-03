@@ -7,23 +7,23 @@
 
     <label>
       <span>Nome</span>
-      <input type="text" formControlName="name">
+      <input type="text" formControlName="name" />
     </label>
 
     <label>
       <span>Endereco</span>
-      <input type="text" formControlName="address">
+      <input type="text" formControlName="address" />
     </label>
 
     <div class="checkout-form__row">
       <label>
         <span>Numero</span>
-        <input type="text" formControlName="number">
+        <input type="text" formControlName="number" />
       </label>
 
       <label>
         <span>Cidade</span>
-        <input type="text" formControlName="city">
+        <input type="text" formControlName="city" />
       </label>
     </div>
 
@@ -36,7 +36,12 @@
 
     <label>
       <span>CEP</span>
-      <input type="text" formControlName="cep" (input)="onCepInput($event)" placeholder="00000-000">
+      <input
+        type="text"
+        formControlName="cep"
+        (input)="onCepInput($event)"
+        placeholder="00000-000"
+      />
     </label>
 
     <label>
@@ -50,12 +55,21 @@
 
     <label *ngIf="form.controls.paymentMethod.value === 'Cartao'">
       <span>Numero do cartao</span>
-      <input type="text" formControlName="cardNumber" (input)="onCardInput($event)" placeholder="0000 0000 0000 0000">
+      <input
+        type="text"
+        formControlName="cardNumber"
+        (input)="onCardInput($event)"
+        placeholder="0000 0000 0000 0000"
+      />
     </label>
 
-    <small *ngIf="form.invalid && form.touched">Preencha corretamente os campos obrigatorios.</small>
+    <small *ngIf="form.invalid && form.touched"
+      >Preencha corretamente os campos obrigatorios.</small
+    >
     <small *ngIf="message">{{ message }}</small>
-    <button type="submit" [disabled]="isSubmitting">{{ isSubmitting ? 'Processando...' : 'Confirmar compra' }}</button>
+    <button type="submit" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Processando...' : 'Confirmar compra' }}
+    </button>
   </form>
 
   <aside class="checkout-summary">
@@ -65,22 +79,22 @@
         <strong>{{ item.name }}</strong>
         <span>Qtd: {{ item.quantity }}</span>
       </div>
-      <span>{{ item.price * item.quantity | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
+      <span>{{ item.price * item.quantity | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</span>
     </article>
 
     <div class="checkout-summary__total">
       <span>Subtotal</span>
-      <strong>{{ total() | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+      <strong>{{ total() | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</strong>
     </div>
 
     <div class="checkout-summary__total checkout-summary__total--shipping">
       <span>Frete para {{ selectedState() }}</span>
-      <strong>{{ shippingFee() | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+      <strong>{{ shippingFee() | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</strong>
     </div>
 
     <div class="checkout-summary__total checkout-summary__total--final">
       <span>Total com frete</span>
-      <strong>{{ finalTotal() | currency: 'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+      <strong>{{ finalTotal() | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</strong>
     </div>
   </aside>
 </section>

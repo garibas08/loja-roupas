@@ -2,17 +2,17 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { StoreService } from '../../utils/store.service';
+import { LojaServico } from '../../utils/store.service';
 
 @Component({
   selector: 'app-account-page',
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './account-page.html',
-  styleUrl: './account-page.css'
+  styleUrl: './account-page.css',
 })
-export class AccountPageComponent {
+export class PaginaContaComponent {
   private readonly fb = inject(FormBuilder);
-  private readonly store = inject(StoreService);
+  private readonly store = inject(LojaServico);
   private readonly router = inject(Router);
 
   readonly user = this.store.loggedUser;
@@ -21,7 +21,7 @@ export class AccountPageComponent {
   readonly latestOrder = computed(() => this.orders()[0] ?? this.store.lastOrder());
   readonly profileForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
-    email: ['', [Validators.required, Validators.email]]
+    email: ['', [Validators.required, Validators.email]],
   });
   profileMessage = '';
   isSavingProfile = false;
@@ -34,10 +34,13 @@ export class AccountPageComponent {
         return;
       }
 
-      this.profileForm.patchValue({
-        name: currentUser.name,
-        email: currentUser.email
-      }, { emitEvent: false });
+      this.profileForm.patchValue(
+        {
+          name: currentUser.name,
+          email: currentUser.email,
+        },
+        { emitEvent: false },
+      );
     });
   }
 
@@ -49,9 +52,9 @@ export class AccountPageComponent {
 
     this.isSavingProfile = true;
     const { name, email } = this.profileForm.getRawValue();
-    const result = await this.store.updateProfile({
+    const result = await this.store.atualizarPerfil({
       name: name ?? '',
-      email: email ?? ''
+      email: email ?? '',
     });
 
     this.isSavingProfile = false;

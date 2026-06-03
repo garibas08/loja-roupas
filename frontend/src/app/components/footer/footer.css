@@ -1,7 +1,10 @@
 .footer {
   border-top: 1px solid var(--rt-border);
   background: color-mix(in srgb, var(--rt-surface-strong) 86%, transparent);
-  transition: background 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+  transition:
+    background 0.5s ease,
+    color 0.5s ease,
+    border-color 0.5s ease;
 }
 
 .footer__inner {
@@ -168,7 +171,9 @@
   color: var(--rt-text);
   font: inherit;
   outline: none;
-  transition: border-color 180ms ease, box-shadow 180ms ease;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .contact-modal__field textarea {
