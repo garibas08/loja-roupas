@@ -21,10 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PedidoServico {
@@ -32,6 +34,7 @@ public class PedidoServico {
     private final PedidoClienteRepositorio pedidoClienteRepositorio;
     private final ProdutoRepositorio produtoRepositorio;
     private final UsuarioRepositorio usuarioRepositorio;
+    private final EmailPedidoServico emailPedidoServico;
 
     @Transactional
     public RespostaPedido criarPedido(RequisicaoCriarPedido request, UsuarioAutenticado authenticatedUser) {
@@ -53,6 +56,7 @@ public class PedidoServico {
             .orderCode(generateOrderCode())
             .user(user)
             .customerName(request.name().trim())
+            .customerEmail(request.email().trim().toLowerCase())
             .address(request.address().trim())
             .number(request.number().trim())
             .city(request.city().trim())
@@ -88,6 +92,7 @@ public class PedidoServico {
         order.setTotal(subtotal.add(shippingFee));
 
         PedidoCliente savedOrder = pedidoClienteRepositorio.save(order);
+        enviarEmailConfirmacaoPedido(savedOrder);
         return montarResposta(savedOrder);
     }
 
@@ -124,6 +129,7 @@ public class PedidoServico {
             order.getCreatedAt(),
             new RespostaClientePedido(
                 order.getCustomerName(),
+                order.getCustomerEmail(),
                 order.getAddress(),
                 order.getNumber(),
                 order.getCity(),
@@ -132,6 +138,23 @@ public class PedidoServico {
                 order.getPaymentMethod().getLabel()
             )
         );
+    }
+
+    private void enviarEmailConfirmacaoPedido(PedidoCliente order) {
+        if (!StringUtils.hasText(order.getCustomerEmail())) {
+            return;
+        }
+
+        try {
+            emailPedidoServico.enviarResumoPedido(order);
+        } catch (Exception exception) {
+            log.warn(
+                "Nao foi possivel enviar o email de confirmacao do pedido {} para {}.",
+                order.getOrderCode(),
+                order.getCustomerEmail(),
+                exception
+            );
+        }
     }
 
     private BigDecimal calculateShippingFee(String state) {

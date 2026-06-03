@@ -1,0 +1,14 @@
+X [ERROR] TS2345: Argument of type '{ name: string; address: string; number: string; city: string; state: EstadoBrasileiro; cep: string; paymentMethod: FormaPagamento; cardNumber: string; }' is not assignable to parameter of type 'DadosCheckout'.
+  Property 'email' is missing in type '{ name: string; address: string; number: string; city: string; state: EstadoBrasileiro; cep: string; paymentMethod: FormaPagamento; cardNumber: string; }' but required in type 'DadosCheckout'. [plugin angular-compiler]
+
+    src/app/pages/checkout/checkout-page.ts:121:48:
+      121 │     const result = await this.store.criarPedido({
+          ╵                                                 ^
+
+  'email' is declared here.
+
+    src/app/utils/models.ts:100:2:
+      100 │   email: string;
+          ╵   ~~~~~
+
+

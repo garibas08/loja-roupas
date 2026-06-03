@@ -67,6 +67,7 @@ export class PaginaCheckoutComponent {
 
   readonly form = this.fb.group({
     name: [this.store.loggedUser()?.name ?? '', [Validators.required, Validators.minLength(3)]],
+    email: [this.store.loggedUser()?.email ?? '', [Validators.required, Validators.email]],
     address: ['', [Validators.required, Validators.minLength(4)]],
     number: ['', [Validators.required]],
     city: ['', [Validators.required, Validators.minLength(2)]],
@@ -120,6 +121,7 @@ export class PaginaCheckoutComponent {
     this.isSubmitting = true;
     const result = await this.store.criarPedido({
       name: this.form.value.name ?? '',
+      email: this.form.value.email ?? '',
       address: this.form.value.address ?? '',
       number: this.form.value.number ?? '',
       city: this.form.value.city ?? '',

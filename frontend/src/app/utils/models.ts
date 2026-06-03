@@ -97,6 +97,7 @@ export type FormaPagamento = 'Cartao' | 'Pix' | 'Boleto';
 
 export interface DadosCheckout {
   name: string;
+  email: string;
   address: string;
   number: string;
   city: string;

@@ -69,6 +69,7 @@ describe('LojaServico', () => {
 
     await store.criarPedido({
       name: 'Cliente Teste',
+      email: 'cliente@exemplo.com',
       address: 'Rua Teste',
       number: '123',
       city: 'Sao Paulo',

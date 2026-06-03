@@ -47,6 +47,9 @@ public class PedidoCliente {
     @Column(name = "customer_name", nullable = false, length = 120)
     private String customerName;
 
+    @Column(name = "customer_email", length = 160)
+    private String customerEmail;
+
     @Column(nullable = false, length = 180)
     private String address;
 

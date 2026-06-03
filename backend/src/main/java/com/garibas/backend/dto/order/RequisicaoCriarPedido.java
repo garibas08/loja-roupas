@@ -1,6 +1,7 @@
 package com.garibas.backend.dto.order;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -11,6 +12,11 @@ public record RequisicaoCriarPedido(
     @NotBlank(message = "Informe o nome.")
     @Size(min = 3, max = 120, message = "O nome deve ter entre 3 e 120 caracteres.")
     String name,
+
+    @NotBlank(message = "Informe o email.")
+    @Email(message = "Informe um email valido.")
+    @Size(max = 160, message = "O email informado e muito longo.")
+    String email,
 
     @NotBlank(message = "Informe o endereco.")
     @Size(min = 4, max = 180, message = "O endereco deve ter entre 4 e 180 caracteres.")
